@@ -6,6 +6,12 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Send } from 'lucide-react';
 
+// ═══════════════════════════════════════════════════════════════════════════
+//  FloatingNavbar — Self-contained Navbar Component
+//  All navbar content, menu links, brand config, and animations are managed HERE.
+//  Usage in pages: <FloatingNavbar /> (no props required)
+// ═══════════════════════════════════════════════════════════════════════════
+
 export interface NavItem {
   label: string;
   href: string;
@@ -13,7 +19,24 @@ export interface NavItem {
   badge?: string;
 }
 
-interface FloatingNavbarProps {
+// ── Default Navbar Content Configuration ─────────────────────────────────────
+const DEFAULT_BRAND_FIRST = 'Rijan';
+const DEFAULT_BRAND_SECOND = 'Regmi';
+const DEFAULT_LOGO_IMG = '/assets/imgs/RJN.png';
+const DEFAULT_CTA_LABEL = 'Contact Me';
+const DEFAULT_CTA_HREF = '#contact';
+const DEFAULT_ACCENT_COLOR = 'purple';
+const DEFAULT_THEME = 'dark';
+
+const DEFAULT_NAV_ITEMS: NavItem[] = [
+  { label: 'About', href: '#about' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Portfolio', href: '#portfolio' },
+  { label: 'Blog', href: '#blog' },
+  { label: 'Resume', href: '/assets/Resume-Rijan Regmi.pdf', isExternal: true, badge: 'PDF' },
+];
+
+export interface FloatingNavbarProps {
   brandNameFirst?: string;
   brandNameSecond?: string;
   subTitle?: string;
@@ -26,25 +49,17 @@ interface FloatingNavbarProps {
   theme?: 'light' | 'dark';
 }
 
-const defaultNavItems: NavItem[] = [
-  { label: 'About', href: '#about' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Portfolio', href: '#portfolio' },
-  { label: 'Blog', href: '#blog' },
-  { label: 'Resume', href: '/assets/Resume-Rijan Regmi.pdf', isExternal: true, badge: 'PDF' },
-];
-
 export default function FloatingNavbar({
-  brandNameFirst = 'Rijan',
-  brandNameSecond = 'Regmi',
-  logoImg = '/assets/imgs/RJN.png',
-  navItems = defaultNavItems,
-  ctaLabel = 'Contact Me',
-  ctaHref = '#contact',
+  brandNameFirst = DEFAULT_BRAND_FIRST,
+  brandNameSecond = DEFAULT_BRAND_SECOND,
+  logoImg = DEFAULT_LOGO_IMG,
+  navItems = DEFAULT_NAV_ITEMS,
+  ctaLabel = DEFAULT_CTA_LABEL,
+  ctaHref = DEFAULT_CTA_HREF,
   ctaOnClick,
-  accentColor = 'purple',
-  theme = 'dark',
-}: FloatingNavbarProps) {
+  accentColor = DEFAULT_ACCENT_COLOR,
+  theme = DEFAULT_THEME,
+}: FloatingNavbarProps = {}) {
   const pathname = usePathname();
   const [activeHref, setActiveHref] = useState<string>('');
   const [clickedItem, setClickedItem] = useState<string | null>(null);
@@ -84,23 +99,26 @@ export default function FloatingNavbar({
     };
   }, [mobileMenuOpen]);
 
-  // Robust Scroll Tracker for Logo Retraction & Pill Shrinking
+  // Scroll Tracker — restored to original working code (git a795f53)
   useEffect(() => {
     const checkScroll = () => {
-      const currentScroll = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      const currentScroll =
+        window.scrollY ||
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0;
       if (currentScroll > 20) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
     };
-
     checkScroll();
     window.addEventListener('scroll', checkScroll, { passive: true });
     window.addEventListener('wheel', checkScroll, { passive: true });
     window.addEventListener('touchmove', checkScroll, { passive: true });
     document.addEventListener('scroll', checkScroll, { passive: true });
-
     return () => {
       window.removeEventListener('scroll', checkScroll);
       window.removeEventListener('wheel', checkScroll);
@@ -285,7 +303,7 @@ export default function FloatingNavbar({
                 />
               </div>
 
-              {/* Splitting Brand Text: Emerges & splits out from behind the logo icon on scroll up, smoothly slides inside on scroll down */}
+              {/* Splitting Brand Text — restored to original working classes (git a795f53) */}
               <div
                 className={`relative z-10 flex flex-col justify-center overflow-hidden py-1 transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] origin-left will-change-[max-width,transform,opacity] ${
                   isScrolled
@@ -293,7 +311,7 @@ export default function FloatingNavbar({
                     : 'max-w-[280px] opacity-100 translate-x-0 scale-100 ml-2.5 sm:ml-3.5'
                 }`}
               >
-                <div className="flex items-baseline font-black tracking-tight text-xl sm:text-2xl leading-normal py-0.5 whitespace-nowrap">
+                <div className="flex items-baseline font-black tracking-tight text-xl sm:text-2xl leading-none whitespace-nowrap">
                   <span className={brandFirstClass}>{brandNameFirst}</span>
                   <span className={`${themeStyles.textAccent} ml-1`}>{brandNameSecond}</span>
                 </div>

@@ -37,16 +37,8 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-[#a855f7] selection:text-white">
-      {/* Floating Navbar (Preserved Exactly as is in Dark Theme) */}
-      <FloatingNavbar
-        brandNameFirst="Rijan"
-        brandNameSecond="Regmi"
-        logoImg="/assets/imgs/RJN.png"
-        ctaLabel="Contact Me"
-        ctaHref="/#contact"
-        accentColor="purple"
-        theme="dark"
-      />
+      {/* Floating Navbar (Self-contained, dark glass pill design) */}
+      <FloatingNavbar />
 
       {/* Main Content Area */}
       <main className="flex-1 pt-28 sm:pt-36 pb-20 px-4 sm:px-6 lg:px-8 max-w-[1200px] w-full mx-auto relative z-10">
