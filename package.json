@@ -1,0 +1,44 @@
+{
+  "name": "rijanregmi-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Unified Next.js Frontend and Express/MongoDB Layered Architecture Backend",
+  "scripts": {
+    "dev": "next dev",
+    "dev:frontend": "next dev -p 3000",
+    "dev:backend": "tsx watch backend/index.ts",
+    "build": "next build",
+    "start": "next start",
+    "start:backend": "tsx backend/index.ts",
+    "test": "tsx --test backend/__test__/*.test.ts",
+    "test:db": "tsx test-db.ts",
+    "seed": "tsx backend/database/seed.ts",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "lucide-react": "^0.475.0",
+    "mongoose": "^8.10.0",
+    "next": "^14.2.23",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^2.6.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.17.17",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}
