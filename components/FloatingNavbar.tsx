@@ -31,6 +31,7 @@ const DEFAULT_THEME = 'dark';
 const DEFAULT_NAV_ITEMS: NavItem[] = [
   { label: 'About', href: '#about' },
   { label: 'Skills', href: '#skills' },
+  { label: 'Services', href: '#services' },
   { label: 'Portfolio', href: '#portfolio' },
   { label: 'Blog', href: '#blog' },
   { label: 'Resume', href: '/assets/Resume-Rijan Regmi.pdf', isExternal: true, badge: 'PDF' },
@@ -155,6 +156,7 @@ export default function FloatingNavbar({
       const contactEl = document.getElementById('contact');
       const blogEl = document.getElementById('blog');
       const portfolioEl = document.getElementById('portfolio');
+      const servicesEl = document.getElementById('services');
       const skillsEl = document.getElementById('skills');
       const aboutEl = document.getElementById('about');
 
@@ -166,6 +168,8 @@ export default function FloatingNavbar({
         setActiveHref('#blog');
       } else if (portfolioEl && scrollPos >= portfolioEl.offsetTop - 120) {
         setActiveHref('#portfolio');
+      } else if (servicesEl && scrollPos >= servicesEl.offsetTop - 120) {
+        setActiveHref('#services');
       } else if (skillsEl && scrollPos >= skillsEl.offsetTop - 120) {
         setActiveHref('#skills');
       } else if (aboutEl && scrollPos >= aboutEl.offsetTop - 120) {

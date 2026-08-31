@@ -6,10 +6,10 @@ import Link from 'next/link';
 import { 
   Github, 
   Linkedin, 
-  Twitter, 
   Instagram, 
   Facebook, 
   Mail, 
+  Phone,
   MapPin, 
   Code2, 
   Send, 
@@ -28,14 +28,151 @@ import {
   Layers,
   Cpu,
   ShieldCheck,
-  Check
+  Check,
+  Globe,
+  Server,
+  Smartphone,
+  Database,
+  LucideIcon
 } from 'lucide-react';
 import { contactApi } from '@/lib/api/contact.api';
 import FloatingNavbar from '@/components/FloatingNavbar';
 import { BLOG_POSTS, BlogPost } from '@/lib/data/blogs';
 
+// Modern X (Twitter) Icon Component
+function XIcon({ size = 18, className = '' }: { size?: number; className?: string }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
+
+// Professional Services Data
+interface ServiceItem {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  features: string[];
+  icon: LucideIcon;
+  gradient: string;
+  badge: string;
+}
+
+const SERVICES: ServiceItem[] = [
+  {
+    id: 'web-dev',
+    title: 'Web Development',
+    category: 'Full-Stack & Frontend',
+    description: 'Modern, high-performance web applications built with Next.js, React, and TypeScript. Pixel-perfect responsive designs, seamless UX, and lightning-fast load speeds.',
+    features: ['Next.js App Router & React 18+', 'Tailwind CSS & Responsive UI/UX', 'State Management & Core Web Vitals'],
+    icon: Globe,
+    gradient: 'from-purple-500/15 via-purple-500/5 to-transparent',
+    badge: 'Popular',
+  },
+  {
+    id: 'api-dev',
+    title: 'API Development & Integration',
+    category: 'Backend & Microservices',
+    description: 'Scalable RESTful and GraphQL APIs engineered with Node.js and Express. Secure OAuth/JWT authentication, rate limiting, and seamless third-party service integrations.',
+    features: ['RESTful & GraphQL API Design', 'OAuth, JWT & Role-Based Auth', 'Stripe, Twilio & Webhook Pipelines'],
+    icon: Server,
+    gradient: 'from-indigo-500/15 via-indigo-500/5 to-transparent',
+    badge: 'Backend',
+  },
+  {
+    id: 'software-dev',
+    title: 'Software Development',
+    category: 'Architecture & Logic',
+    description: 'End-to-end custom software solutions tailored to complex business requirements. Clean architecture, modular design patterns, and robust enterprise-grade backend logic.',
+    features: ['Custom Business Logic & Workflows', 'Clean Architecture & Modular Code', 'Microservices & Event-Driven Systems'],
+    icon: Layers,
+    gradient: 'from-fuchsia-500/15 via-fuchsia-500/5 to-transparent',
+    badge: 'Custom',
+  },
+  {
+    id: 'app-dev',
+    title: 'App Development',
+    category: 'Cross-Platform & Mobile',
+    description: 'High-quality cross-platform and Progressive Web Apps (PWA) with native-like fluidity, offline caching, and responsive touch gestures optimized for all screen sizes.',
+    features: ['Progressive Web Apps (PWA)', 'Cross-Platform Mobile Experiences', 'Touch-Optimized Responsive UI'],
+    icon: Smartphone,
+    gradient: 'from-violet-500/15 via-violet-500/5 to-transparent',
+    badge: 'Mobile',
+  },
+  {
+    id: 'db-design',
+    title: 'Database Design & Management',
+    category: 'Data & Cloud Storage',
+    description: 'Optimized schema design and performance management for MongoDB, PostgreSQL, and Redis. Data normalization, efficient indexing, caching, and automated backups.',
+    features: ['MongoDB, PostgreSQL & Redis', 'Schema Modeling & Index Optimization', 'Data Integrity & Migration Strategies'],
+    icon: Database,
+    gradient: 'from-emerald-500/15 via-emerald-500/5 to-transparent',
+    badge: 'Database',
+  },
+  {
+    id: 'software-maintenance',
+    title: 'Software Maintenance & Support',
+    category: 'Reliability & Uptime',
+    description: 'Proactive maintenance, bug fixing, dependency upgrades, security patching, and ongoing monitoring to ensure your production applications run with 99.9% uptime.',
+    features: ['Continuous Bug Fixes & Hotfixes', 'Security Audits & Patch Updates', 'Performance & Uptime Monitoring'],
+    icon: ShieldCheck,
+    gradient: 'from-amber-500/15 via-amber-500/5 to-transparent',
+    badge: 'Support',
+  },
+  {
+    id: 'consulting-code-review',
+    title: 'Consulting & Code Review',
+    category: 'Technical Advisory',
+    description: 'Comprehensive code audits, architecture reviews, and scalability consulting. Identify bottlenecks, enforce clean code standards, and streamline CI/CD delivery.',
+    features: ['In-Depth Code Quality Audits', 'Architecture & Scalability Advisory', 'CI/CD Pipeline & DevOps Setup'],
+    icon: Code2,
+    gradient: 'from-blue-500/15 via-blue-500/5 to-transparent',
+    badge: 'Advisory',
+  },
+  {
+    id: 'seo-integration',
+    title: 'SEO Integration & Optimization',
+    category: 'Visibility & Rankings',
+    description: 'Advanced technical SEO, semantic HTML5 structure, JSON-LD structured data, metadata optimization, and Core Web Vitals tuning for top Google search engine rankings.',
+    features: ['Core Web Vitals & Page Speed 95+', 'Structured Data (JSON-LD) & OpenGraph', 'Technical SEO & Semantic Indexing'],
+    icon: TrendingUp,
+    gradient: 'from-rose-500/15 via-rose-500/5 to-transparent',
+    badge: 'SEO',
+  },
+];
+
+// Core Technical Skills Data
+interface SkillItem {
+  name: string;
+  level: string;
+  iconSrc: string;
+  whiteBg?: boolean;
+}
+
+const SKILLS: SkillItem[] = [
+  { name: 'TypeScript', level: 'Advanced', iconSrc: '/assets/skills/typescript.svg' },
+  { name: 'React', level: 'Advanced', iconSrc: '/assets/skills/react.svg' },
+  { name: 'Node.js', level: 'Proficient', iconSrc: '/assets/skills/nodejs.svg' },
+  { name: 'Express.js', level: 'Advanced', iconSrc: '/assets/skills/express.svg' },
+  { name: 'Python', level: 'Advanced', iconSrc: '/assets/skills/python.svg' },
+  { name: 'SQL, noSQL', level: 'Advanced', iconSrc: '/assets/skills/postgresql.svg' },
+  { name: 'Java', level: 'Proficient', iconSrc: '/assets/skills/java.svg', whiteBg: true },
+  { name: 'PHP', level: 'Advanced', iconSrc: '/assets/skills/php.svg' },
+  { name: 'MongoDB', level: 'Proficient', iconSrc: '/assets/skills/mongodb.svg' },
+  { name: 'Tailwind CSS', level: 'Expert', iconSrc: '/assets/skills/tailwindcss.svg' },
+];
+
 // Official Projects Data with real screenshots and brand logos
-export interface ProjectItem {
+interface ProjectItem {
   id: string;
   title: string;
   category: string;
@@ -265,9 +402,9 @@ export default function HomePage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-[#a855f7] text-slate-700 hover:text-white border border-slate-200 hover:border-purple-500 transition-all flex items-center justify-center shadow-md hover:scale-110"
-                aria-label="Twitter"
+                aria-label="X"
               >
-                <Twitter size={18} />
+                <XIcon size={16} />
               </a>
               <a
                 href="https://www.facebook.com/rijan.regmi.946"
@@ -337,10 +474,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About Section (Balanced Spacing & Clean Padding on Mobile) */}
+      {/* About Section (Centered & Clean Spacing on Mobile) */}
       <section id="about" className="py-20 sm:py-24 bg-white border-t border-slate-200/80 relative">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-12 items-start">
+        <div className="max-w-md md:max-w-7xl mx-auto px-8 sm:px-12 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-14 sm:gap-16 md:gap-12 items-start">
             
             {/* Column 1: Who am I ? */}
             <div className="flex flex-col justify-between h-full md:border-r md:border-slate-200 md:pr-8 space-y-6">
@@ -410,8 +547,8 @@ export default function HomePage() {
                 <a href="https://www.facebook.com/rijan.regmi.946" target="_blank" rel="noopener noreferrer" className="hover:text-purple-800 transition-colors" aria-label="Facebook">
                   <Facebook size={18} />
                 </a>
-                <a href="https://x.com/rijanregmi_" target="_blank" rel="noopener noreferrer" className="hover:text-purple-800 transition-colors" aria-label="Twitter">
-                  <Twitter size={18} />
+                <a href="https://x.com/rijanregmi_" target="_blank" rel="noopener noreferrer" className="hover:text-purple-800 transition-colors" aria-label="X">
+                  <XIcon size={16} />
                 </a>
                 <a href="https://www.instagram.com/rijanregmi_" target="_blank" rel="noopener noreferrer" className="hover:text-purple-800 transition-colors" aria-label="Instagram">
                   <Instagram size={18} />
@@ -436,8 +573,8 @@ export default function HomePage() {
 
               <div className="space-y-4">
                 {/* Row 1: UX Design */}
-                <div className="flex items-start gap-3.5 p-3 sm:p-0 rounded-xl bg-slate-50 sm:bg-transparent border sm:border-0 border-slate-100 sm:pb-4 sm:border-b sm:border-slate-200">
-                  <div className="p-2.5 rounded-lg bg-purple-100 text-[#9333ea] shrink-0 border border-purple-200">
+                <div className="flex items-start gap-3.5 pb-4 border-b border-slate-200">
+                  <div className="p-2 rounded-lg bg-purple-100 text-[#9333ea] shrink-0 border border-purple-200">
                     <Layout size={20} />
                   </div>
                   <div>
@@ -447,8 +584,8 @@ export default function HomePage() {
                 </div>
 
                 {/* Row 2: Web Development */}
-                <div className="flex items-start gap-3.5 p-3 sm:p-0 rounded-xl bg-slate-50 sm:bg-transparent border sm:border-0 border-slate-100 sm:pb-4 sm:border-b sm:border-slate-200">
-                  <div className="p-2.5 rounded-lg bg-purple-100 text-[#9333ea] shrink-0 border border-purple-200">
+                <div className="flex items-start gap-3.5 pb-4 border-b border-slate-200">
+                  <div className="p-2 rounded-lg bg-purple-100 text-[#9333ea] shrink-0 border border-purple-200">
                     <Code2 size={20} />
                   </div>
                   <div>
@@ -458,8 +595,8 @@ export default function HomePage() {
                 </div>
 
                 {/* Row 3: Software Development */}
-                <div className="flex items-start gap-3.5 p-3 sm:p-0 rounded-xl bg-slate-50 sm:bg-transparent border sm:border-0 border-slate-100">
-                  <div className="p-2.5 rounded-lg bg-purple-100 text-[#9333ea] shrink-0 border border-purple-200">
+                <div className="flex items-start gap-3.5">
+                  <div className="p-2 rounded-lg bg-purple-100 text-[#9333ea] shrink-0 border border-purple-200">
                     <TrendingUp size={20} />
                   </div>
                   <div>
@@ -479,64 +616,12 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <span className="text-xs uppercase tracking-widest text-[#9333ea] font-bold">Core Stack</span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 mt-2">Technical Proficiencies</h2>
-            <p className="text-slate-600 text-sm mt-3">Technologies and tools used across full-stack projects</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2 tracking-tight">Technical Proficiencies</h2>
+            <p className="text-slate-600 text-sm sm:text-base mt-3">Technologies and tools used across full-stack projects</p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5 sm:gap-6">
-            {[
-              {
-                name: 'TypeScript',
-                level: 'Advanced',
-                iconSrc: '/assets/skills/typescript.svg',
-              },
-              {
-                name: 'React',
-                level: 'Advanced',
-                iconSrc: '/assets/skills/react.svg',
-              },
-              {
-                name: 'Node.js',
-                level: 'Proficient',
-                iconSrc: '/assets/skills/nodejs.svg',
-              },
-              {
-                name: 'Express.js',
-                level: 'Advanced',
-                iconSrc: '/assets/skills/express.svg',
-              },
-              {
-                name: 'Python',
-                level: 'Advanced',
-                iconSrc: '/assets/skills/python.svg',
-              },
-              {
-                name: 'SQL, noSQL',
-                level: 'Advanced',
-                iconSrc: '/assets/skills/postgresql.svg',
-              },
-              {
-                name: 'Java',
-                level: 'Proficient',
-                iconSrc: '/assets/skills/java.svg',
-                whiteBg: true,
-              },
-              {
-                name: 'PHP',
-                level: 'Advanced',
-                iconSrc: '/assets/skills/php.svg',
-              },
-              {
-                name: 'MongoDB',
-                level: 'Proficient',
-                iconSrc: '/assets/skills/mongodb.svg',
-              },
-              {
-                name: 'Tailwind CSS',
-                level: 'Expert',
-                iconSrc: '/assets/skills/tailwindcss.svg',
-              },
-            ].map((skill, index) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+            {SKILLS.map((skill, index) => (
               <div 
                 key={index} 
                 className="relative overflow-hidden p-6 sm:p-7 rounded-2xl text-center flex flex-col items-center justify-between min-h-[185px] bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-purple-500/50 shadow-md hover:shadow-xl hover:shadow-purple-900/10 transition-all duration-300 hover:-translate-y-1.5 group cursor-pointer"
@@ -562,6 +647,82 @@ export default function HomePage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* My Services Section */}
+      <section id="services" className="py-24 bg-white border-t border-slate-200/80 relative">
+        <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          
+          {/* Section Header */}
+          <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+            <span className="text-xs uppercase tracking-widest text-[#9333ea] font-bold">
+              What I Offer
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 mt-2 tracking-tight">
+              My Services
+            </h2>
+            <p className="text-slate-600 text-sm sm:text-base mt-3">
+              Comprehensive full-stack engineering, API architecture, mobile solutions, and technical advisory built for performance, reliability, and business impact.
+            </p>
+          </div>
+
+          {/* 8-Card Responsive Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7">
+            {SERVICES.map((service) => {
+              const IconComponent = service.icon;
+              return (
+                <div
+                  key={service.id}
+                  className="rounded-3xl p-6 sm:p-7 flex flex-col justify-between bg-white border border-slate-200/90 hover:border-purple-500/50 shadow-md hover:shadow-xl hover:shadow-purple-900/10 transition-all duration-300 hover:-translate-y-1.5 group relative overflow-hidden"
+                >
+                  {/* Subtle Gradient Backlight on Hover */}
+                  <div className={`absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br ${service.gradient} rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none`} />
+
+                  <div className="relative z-10">
+                    {/* Top row: Icon + Category Badge */}
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="w-12 h-12 rounded-2xl bg-purple-50 border border-purple-200/80 flex items-center justify-center text-[#9333ea] group-hover:scale-110 group-hover:bg-[#9333ea] group-hover:text-white transition-all duration-300 shadow-sm">
+                        <IconComponent size={22} />
+                      </div>
+                      <span className="text-[10px] sm:text-[11px] font-semibold uppercase px-2.5 py-0.5 rounded-full border bg-purple-50 text-purple-700 border-purple-200">
+                        {service.category}
+                      </span>
+                    </div>
+
+                    {/* Title & Description */}
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-purple-700 transition-colors mt-4 tracking-tight">
+                      {service.title}
+                    </h3>
+                    <p className="text-xs sm:text-[13px] text-slate-600 leading-relaxed mt-2">
+                      {service.description}
+                    </p>
+
+                    {/* Features List */}
+                    <div className="mt-4 pt-4 border-t border-slate-100 space-y-2">
+                      {service.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-start gap-2 text-xs text-slate-700">
+                          <Check size={14} className="text-[#9333ea] shrink-0 mt-0.5" />
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Bottom Action Link */}
+                  <div className="relative z-10 mt-6 pt-3 border-t border-slate-100">
+                    <a
+                      href="#contact"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#9333ea] group-hover:text-purple-800 transition-colors"
+                    >
+                      <span>Inquire Service</span>
+                      <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -780,7 +941,7 @@ export default function HomePage() {
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200 shadow-sm">
+                <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200 shadow-sm hover:border-purple-300 transition-colors">
                   <div className="p-3 rounded-lg bg-purple-100 text-[#9333ea] border border-purple-200">
                     <Mail size={20} />
                   </div>
@@ -792,7 +953,19 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200 shadow-sm">
+                <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200 shadow-sm hover:border-purple-300 transition-colors">
+                  <div className="p-3 rounded-lg bg-purple-100 text-[#9333ea] border border-purple-200">
+                    <Phone size={20} />
+                  </div>
+                  <div>
+                    <span className="text-xs text-slate-500 block">Contact Number</span>
+                    <a href="tel:+9779869061333" className="text-sm font-semibold text-slate-900 hover:text-[#9333ea] transition-colors">
+                      + (977) 9869061333
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200 shadow-sm hover:border-purple-300 transition-colors">
                   <div className="p-3 rounded-lg bg-purple-100 text-[#9333ea] border border-purple-200">
                     <MapPin size={20} />
                   </div>
@@ -802,15 +975,69 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
+
+              {/* Social Channels (Centered Circular Style) */}
+              <div className="pt-3 text-center">
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-4">
+                  Follow & Connect
+                </span>
+                <div className="flex items-center justify-center gap-3 sm:gap-4">
+                  <a
+                    href="https://www.instagram.com/rijanregmi_"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-[#9333ea] text-slate-700 hover:text-white border border-slate-200/80 hover:border-purple-500 transition-all flex items-center justify-center shadow-md shadow-slate-200/60 hover:shadow-xl hover:shadow-purple-900/20 hover:scale-110 cursor-pointer"
+                    aria-label="Instagram"
+                  >
+                    <Instagram size={19} />
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/rijan-regmi-a720372b3"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-[#9333ea] text-slate-700 hover:text-white border border-slate-200/80 hover:border-purple-500 transition-all flex items-center justify-center shadow-md shadow-slate-200/60 hover:shadow-xl hover:shadow-purple-900/20 hover:scale-110 cursor-pointer"
+                    aria-label="LinkedIn"
+                  >
+                    <Linkedin size={19} />
+                  </a>
+                  <a
+                    href="https://github.com/RijanRegmi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-[#9333ea] text-slate-700 hover:text-white border border-slate-200/80 hover:border-purple-500 transition-all flex items-center justify-center shadow-md shadow-slate-200/60 hover:shadow-xl hover:shadow-purple-900/20 hover:scale-110 cursor-pointer"
+                    aria-label="GitHub"
+                  >
+                    <Github size={19} />
+                  </a>
+                  <a
+                    href="https://x.com/rijanregmi_"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-[#9333ea] text-slate-700 hover:text-white border border-slate-200/80 hover:border-purple-500 transition-all flex items-center justify-center shadow-md shadow-slate-200/60 hover:shadow-xl hover:shadow-purple-900/20 hover:scale-110 cursor-pointer"
+                    aria-label="X"
+                  >
+                    <XIcon size={17} />
+                  </a>
+                  <a
+                    href="https://www.facebook.com/rijan.regmi.946"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-[#9333ea] text-slate-700 hover:text-white border border-slate-200/80 hover:border-purple-500 transition-all flex items-center justify-center shadow-md shadow-slate-200/60 hover:shadow-xl hover:shadow-purple-900/20 hover:scale-110 cursor-pointer"
+                    aria-label="Facebook"
+                  >
+                    <Facebook size={19} />
+                  </a>
+                </div>
+              </div>
             </div>
 
             {/* Contact Form */}
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50">
-              <h3 className="text-xl font-bold text-slate-900 mb-6">Send a Message</h3>
+            <div className="bg-white p-5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-5 sm:mb-6">Send a Message</h3>
 
               {submitStatus.message && (
                 <div
-                  className={`p-4 rounded-xl mb-6 text-sm flex items-center gap-3 ${
+                  className={`p-4 rounded-xl sm:rounded-2xl mb-5 text-sm flex items-center gap-3 ${
                     submitStatus.success
                       ? 'bg-emerald-50 border border-emerald-300 text-emerald-800'
                       : 'bg-rose-50 border border-rose-300 text-rose-800'
@@ -821,7 +1048,7 @@ export default function HomePage() {
                 </div>
               )}
 
-              <form onSubmit={handleContactSubmit} className="space-y-4">
+              <form onSubmit={handleContactSubmit} className="space-y-4 sm:space-y-5">
                 <div>
                   <label htmlFor="name" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
                     Your Name *
@@ -833,7 +1060,7 @@ export default function HomePage() {
                     value={formState.name}
                     onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                     placeholder="John Doe"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-[#9333ea] focus:bg-white focus:ring-2 focus:ring-purple-500/20 transition-all"
+                    className="w-full px-4 sm:px-5 py-3.5 sm:py-3.5 rounded-xl sm:rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:border-[#9333ea] focus:bg-white focus:ring-2 focus:ring-purple-500/20 transition-all"
                   />
                 </div>
 
@@ -848,7 +1075,7 @@ export default function HomePage() {
                     value={formState.email}
                     onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                     placeholder="john@example.com"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-[#9333ea] focus:bg-white focus:ring-2 focus:ring-purple-500/20 transition-all"
+                    className="w-full px-4 sm:px-5 py-3.5 sm:py-3.5 rounded-xl sm:rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:border-[#9333ea] focus:bg-white focus:ring-2 focus:ring-purple-500/20 transition-all"
                   />
                 </div>
 
@@ -862,7 +1089,7 @@ export default function HomePage() {
                     value={formState.subject}
                     onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
                     placeholder="Project Inquiry"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-[#9333ea] focus:bg-white focus:ring-2 focus:ring-purple-500/20 transition-all"
+                    className="w-full px-4 sm:px-5 py-3.5 sm:py-3.5 rounded-xl sm:rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:border-[#9333ea] focus:bg-white focus:ring-2 focus:ring-purple-500/20 transition-all"
                   />
                 </div>
 
@@ -877,20 +1104,20 @@ export default function HomePage() {
                     value={formState.message}
                     onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                     placeholder="Tell me about your project..."
-                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:border-[#9333ea] focus:bg-white focus:ring-2 focus:ring-purple-500/20 transition-all resize-none"
+                    className="w-full px-4 sm:px-5 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:border-[#9333ea] focus:bg-white focus:ring-2 focus:ring-purple-500/20 transition-all resize-none min-h-[120px] sm:min-h-[130px]"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={submitStatus.loading}
-                  className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] hover:from-[#a21caf] hover:to-[#6b21a8] text-white font-bold text-sm shadow-xl shadow-purple-900/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 hover:scale-[1.01] active:scale-[0.99]"
+                  className="w-full py-4 sm:py-3.5 px-6 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] hover:from-[#a21caf] hover:to-[#6b21a8] text-white font-bold text-base sm:text-sm shadow-xl shadow-purple-900/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
                 >
                   {submitStatus.loading ? (
                     <span>Sending message...</span>
                   ) : (
                     <>
-                      <Send size={16} />
+                      <Send size={18} />
                       <span>Send Message</span>
                     </>
                   )}
