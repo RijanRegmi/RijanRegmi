@@ -11,7 +11,6 @@ import {
   Cpu, 
   ShieldCheck, 
   Check, 
-  TrendingUp,
   Sparkles,
   BookOpen,
   ArrowRight
@@ -129,7 +128,7 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
-      {/* Floating Navbar (Self-contained, dark glass pill design) */}
+      {/* Floating Navbar */}
       <FloatingNavbar />
 
       {/* Main Content Area */}
@@ -139,10 +138,11 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
         <div className="mb-8">
           <Link
             href="/#blog"
+            aria-label="Back to all engineering case studies and blog posts"
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 hover:text-purple-700 transition-colors group"
           >
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform text-purple-600" />
-            <span>Back to All Case Studies & Blogs</span>
+            <span>Back to All Case Studies &amp; Blogs</span>
           </Link>
         </div>
 
@@ -177,7 +177,7 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
           <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-200">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full overflow-hidden border border-purple-300 bg-purple-100 shadow-xs">
-                <img src="/assets/imgs/RJN.png" alt="Rijan Regmi" className="w-full h-full object-cover" />
+                <img src="/assets/imgs/RJN.png" alt="Rijan Regmi author portrait" className="w-full h-full object-cover" />
               </div>
               <div>
                 <span className="text-sm font-bold text-slate-900 block">Rijan Regmi</span>
@@ -189,6 +189,7 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
               href={post.websiteUrl}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`Visit live website ${post.displayUrl}`}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] text-white font-bold text-xs sm:text-sm shadow-xl shadow-purple-900/25 hover:scale-105 transition-transform"
             >
               <Sparkles size={15} />
@@ -202,7 +203,7 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
         <div className="relative w-full h-72 sm:h-[450px] lg:h-[520px] rounded-3xl overflow-hidden border border-slate-200 bg-slate-900 shadow-2xl mb-12 group">
           <img
             src={post.image}
-            alt={`${post.title} screenshot`}
+            alt={`${post.title} architecture overview screenshot`}
             className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-700"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80" />
@@ -210,7 +211,7 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
           <div className="absolute bottom-6 left-6 right-6 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3 bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl border border-slate-200 shadow-lg">
               {post.logo && (
-                <img src={post.logo} alt="Logo" className="w-8 h-8 object-contain" />
+                <img src={post.logo} alt={`${post.title} logo`} className="w-8 h-8 object-contain" />
               )}
               <span className="text-sm font-bold text-slate-900">{post.displayUrl}</span>
             </div>
@@ -219,6 +220,7 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
               href={post.websiteUrl}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`Open live production site for ${post.title}`}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/90 hover:bg-white text-slate-900 text-xs font-bold transition-all border border-slate-200 shadow-md"
             >
               <span>Open Website</span>
@@ -250,7 +252,7 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
             <div className="p-7 rounded-3xl bg-white border border-slate-200 shadow-lg space-y-3">
               <h2 className="text-lg sm:text-xl font-extrabold text-[#9333ea] flex items-center gap-2.5">
                 <Layers size={20} />
-                System Overview
+                <span>System Overview</span>
               </h2>
               <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
                 {post.systemOverview}
@@ -261,7 +263,7 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
             <div className="p-7 rounded-3xl bg-white border border-slate-200 shadow-lg space-y-3">
               <h2 className="text-lg sm:text-xl font-extrabold text-[#7c3aed] flex items-center gap-2.5">
                 <Cpu size={20} />
-                Architecture Blueprint
+                <span>Architecture Blueprint</span>
               </h2>
               <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
                 {post.architectureBlueprint}
@@ -296,16 +298,16 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
             <div className="space-y-4">
               <h3 className="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2.5">
                 <ShieldCheck size={22} className="text-[#9333ea]" />
-                Technical Challenges & Solutions
+                <span>Technical Challenges &amp; Solutions</span>
               </h3>
 
               <div className="space-y-3">
                 {post.challengesSolved.map((item, idx) => (
                   <div key={idx} className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-1.5">
-                    <h4 className="text-sm sm:text-base font-bold text-purple-900 flex items-center gap-2">
+                    <p className="text-sm sm:text-base font-bold text-purple-900 flex items-center gap-2">
                       <Check size={16} className="text-purple-600 shrink-0" />
-                      {item.title}
-                    </h4>
+                      <span>{item.title}</span>
+                    </p>
                     <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pl-6">
                       {item.desc}
                     </p>
@@ -317,14 +319,14 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
           </div>
 
           {/* Sidebar: Technology Stack & Quick Actions */}
-          <div className="lg:col-span-4 space-y-6 sticky top-24">
+          <aside aria-label="Technical Details Sidebar" className="lg:col-span-4 space-y-6 sticky top-24">
             
             {/* Tech Stack Card */}
             <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xl space-y-4">
-              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2 uppercase tracking-wider text-xs">
+              <p className="text-base font-bold text-slate-900 flex items-center gap-2 uppercase tracking-wider text-xs">
                 <Cpu size={16} className="text-purple-600" />
-                Technology Stack
-              </h3>
+                <span>Technology Stack</span>
+              </p>
 
               <div className="space-y-3">
                 {post.techStackBreakdown.map((tech, idx) => (
@@ -350,12 +352,13 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
 
             {/* Launch Project CTA */}
             <div className="p-6 rounded-3xl bg-gradient-to-b from-purple-50 to-white border border-purple-200 text-center space-y-3 shadow-xl">
-              <h4 className="text-base font-bold text-slate-900">Experience the Live Platform</h4>
+              <p className="text-base font-bold text-slate-900">Experience the Live Platform</p>
               <p className="text-xs text-slate-600">Explore the production deployment with full interactions.</p>
               <a
                 href={post.websiteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Launch production deployment for ${post.title}`}
                 className="w-full inline-flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] text-white text-xs font-bold shadow-lg shadow-purple-900/25 hover:scale-105 transition-transform"
               >
                 <span>Launch {post.displayUrl}</span>
@@ -363,18 +366,18 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
               </a>
             </div>
 
-          </div>
+          </aside>
 
         </div>
 
         {/* Explore Other Architectural Case Studies */}
-        <div className="pt-12 border-t border-slate-200 space-y-6">
+        <section aria-label="Related Engineering Case Studies" className="pt-12 border-t border-slate-200 space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
               <BookOpen size={20} className="text-[#9333ea]" />
-              More Engineering Case Studies
+              <span>More Engineering Case Studies</span>
             </h2>
-            <Link href="/#blog" className="text-xs font-bold text-purple-700 hover:underline">
+            <Link href="/#blog" aria-label="View all engineering case studies" className="text-xs font-bold text-purple-700 hover:underline">
               View All Case Studies &rarr;
             </Link>
           </div>
@@ -384,10 +387,11 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
               <Link
                 key={other.slug}
                 href={`/blog/${other.slug}`}
+                aria-label={`Read Case Study: ${other.title}`}
                 className="p-6 rounded-3xl bg-white border border-slate-200 hover:border-purple-500/50 shadow-md hover:shadow-xl hover:shadow-purple-900/10 transition-all duration-300 group flex items-start gap-4 hover:-translate-y-1"
               >
                 <div className="w-20 h-20 rounded-2xl overflow-hidden bg-slate-900 shrink-0 border border-slate-200">
-                  <img src={other.image} alt={other.title} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform" />
+                  <img src={other.image} alt={`${other.title} preview screenshot`} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform" />
                 </div>
                 <div className="flex-1 space-y-1">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[#9333ea]">
@@ -398,28 +402,29 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
                   </h3>
                   <div className="text-[11px] text-slate-500 flex items-center gap-1 font-semibold pt-1">
                     <span>Read Case Study</span>
+                    <span className="sr-only">: {other.title}</span>
                     <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform text-purple-600" />
                   </div>
                 </div>
               </Link>
             ))}
           </div>
-        </div>
+        </section>
 
       </main>
 
       {/* Footer */}
-      <footer className="py-8 bg-slate-900 text-center text-xs text-slate-400 border-t border-slate-800">
+      <footer className="py-8 bg-slate-950 text-center text-xs text-slate-400 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© {new Date().getFullYear()} Rijan Regmi. All rights reserved.</p>
-          <div className="flex items-center gap-6 font-medium text-slate-300">
-            <Link href="/" className="hover:text-purple-400 transition-colors">Home</Link>
-            <Link href="/#about" className="hover:text-purple-400 transition-colors">About</Link>
-            <Link href="/#skills" className="hover:text-purple-400 transition-colors">Skills</Link>
-            <Link href="/#portfolio" className="hover:text-purple-400 transition-colors">Portfolio</Link>
-            <Link href="/#blog" className="hover:text-purple-400 transition-colors">Blog</Link>
-            <Link href="/#contact" className="hover:text-purple-400 transition-colors">Contact</Link>
-          </div>
+          <nav aria-label="Blog Article Footer Links" className="flex flex-wrap items-center justify-center gap-6 font-medium text-slate-300">
+            <Link href="/" aria-label="Return to Home page" className="hover:text-purple-400 transition-colors">Home</Link>
+            <Link href="/#about" aria-label="Go to About page" className="hover:text-purple-400 transition-colors">About</Link>
+            <Link href="/#skills" aria-label="Go to Skills page" className="hover:text-purple-400 transition-colors">Skills</Link>
+            <Link href="/#portfolio" aria-label="Go to Portfolio page" className="hover:text-purple-400 transition-colors">Portfolio</Link>
+            <Link href="/#blog" aria-label="Go to Blog page" className="hover:text-purple-400 transition-colors">Blog</Link>
+            <Link href="/#contact" aria-label="Go to Contact page" className="hover:text-purple-400 transition-colors">Contact</Link>
+          </nav>
         </div>
       </footer>
     </div>

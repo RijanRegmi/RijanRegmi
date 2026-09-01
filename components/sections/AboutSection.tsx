@@ -45,7 +45,7 @@ export default function AboutSection() {
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[#9333ea] text-[#9333ea] hover:bg-[#9333ea] hover:text-white transition-all text-xs font-semibold uppercase tracking-wider shadow-sm group cursor-pointer"
               >
                 <Printer size={15} className="group-hover:scale-110 transition-transform" />
-                Download My CV
+                <span>Download My CV</span>
               </a>
             </div>
           </div>

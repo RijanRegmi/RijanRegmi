@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     template: '%s | Rijan Regmi',
   },
   description:
-    'Official portfolio of Rijan Regmi, a Full-Stack Developer and UI/UX Engineer specializing in React, Next.js, Node.js, Express, Python, TypeScript, and Technical Football Scouting. Explore live deployments, accredited certifications, and technical case studies.',
+    'Rijan Regmi is a Full-Stack Developer & Software Engineer in Nepal specializing in React, Next.js, Node.js, TypeScript, and scalable API architecture.',
   keywords: [
     'Rijan Regmi',
     'Rijan Regmi Portfolio',
@@ -35,8 +35,6 @@ export const metadata: Metadata = {
     'AFCAS Certified Scout',
     'Web Development Kathmandu',
     'Freelance Software Developer',
-    'RopeWallet Architect',
-    'Rilogram Platform',
   ],
   authors: [{ name: 'Rijan Regmi', url: SITE_URL }],
   creator: 'Rijan Regmi',
@@ -66,7 +64,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Rijan Regmi | Full-Stack Developer & Software Engineer',
     description:
-      'Full-Stack Developer & UI/UX Engineer specializing in Next.js, Node.js, Python, TypeScript, and Technical Football Scouting.',
+      'Full-Stack Developer & Software Engineer specializing in Next.js, Node.js, Python, TypeScript, and scalable web systems.',
     site: '@rijanregmi_',
     creator: '@rijanregmi_',
     images: ['/assets/imgs/header.jpeg'],

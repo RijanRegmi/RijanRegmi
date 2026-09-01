@@ -5,13 +5,13 @@ import {
   Mail,
   Phone,
   MapPin,
-  Instagram,
-  Linkedin,
-  Github,
-  Facebook,
   Send,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Instagram,
+  Facebook,
+  Github,
+  Linkedin
 } from 'lucide-react';
 import XIcon from '@/components/icons/XIcon';
 import { contactApi } from '@/lib/api/contact.api';
@@ -61,7 +61,7 @@ export default function ContactSection() {
       setSubmitStatus({
         loading: false,
         success: false,
-        message: err.message || 'Failed to submit form.',
+        message: err.message || 'An unexpected error occurred. Please try again.',
       });
     }
   };
@@ -73,10 +73,12 @@ export default function ContactSection() {
           {/* Contact Info */}
           <div className="space-y-8 reveal-left delay-1">
             <div>
-              <span className="text-xs uppercase tracking-widest text-[#9333ea] font-bold">Get In Touch</span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 mt-2">Let's Build Something Great Together</h2>
+              <span className="text-xs uppercase tracking-widest text-[#9333ea] font-bold">Contact</span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 mt-2">
+                Let&apos;s Work Together
+              </h2>
               <p className="text-slate-600 text-sm mt-4 leading-relaxed">
-                Have a project inquiry, collaboration proposal, or just want to say hi? Feel free to reach out using the form or through any of my contact channels.
+                Have a project in mind, an inquiry about my services, or just want to connect? Send a message and I will get back to you as soon as possible.
               </p>
             </div>
 
@@ -86,7 +88,7 @@ export default function ContactSection() {
                   <Mail size={20} />
                 </div>
                 <div>
-                  <span className="text-xs text-slate-500 block">Email Me</span>
+                  <span className="text-xs text-slate-500 block">Email</span>
                   <a href="mailto:rijanregmi8@gmail.com" className="text-sm font-semibold text-slate-900 hover:text-[#9333ea] transition-colors">
                     rijanregmi8@gmail.com
                   </a>
@@ -98,7 +100,7 @@ export default function ContactSection() {
                   <Phone size={20} />
                 </div>
                 <div>
-                  <span className="text-xs text-slate-500 block">Contact Number</span>
+                  <span className="text-xs text-slate-500 block">Phone</span>
                   <a href="tel:+9779869061333" className="text-sm font-semibold text-slate-900 hover:text-[#9333ea] transition-colors">
                     + (977) 9869061333
                   </a>
@@ -111,17 +113,15 @@ export default function ContactSection() {
                 </div>
                 <div>
                   <span className="text-xs text-slate-500 block">Location</span>
-                  <span className="text-sm font-semibold text-slate-900">Kathmandu, Nepal</span>
+                  <span className="text-sm font-semibold text-slate-900">Nepal, Kathmandu</span>
                 </div>
               </div>
             </div>
 
-            {/* Social Channels (Centered Circular Style) */}
-            <div className="pt-3 text-center">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-4">
-                Follow & Connect
-              </span>
-              <div className="flex items-center justify-center gap-3 sm:gap-4">
+            {/* Social Links */}
+            <div>
+              <span className="text-xs font-bold text-slate-900 block mb-3 uppercase tracking-wider">Follow Me</span>
+              <div className="flex items-center gap-3">
                 <a
                   href="https://www.instagram.com/rijanregmi_"
                   target="_blank"

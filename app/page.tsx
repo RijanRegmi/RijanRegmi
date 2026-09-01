@@ -2,6 +2,7 @@
 
 import React from 'react';
 import FloatingNavbar from '@/components/FloatingNavbar';
+import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import ScrollRevealProvider from '@/components/ScrollRevealProvider';
 import HeroSection from '@/components/sections/HeroSection';
 import AboutSection from '@/components/sections/AboutSection';
@@ -46,6 +47,12 @@ export default function HomePage() {
 
         {/* Footer */}
         <Footer />
+
+        {/* Floating WhatsApp Quick Chat Button (Bottom Right) */}
+        <FloatingWhatsApp
+          phoneNumber="9779869061333"
+          defaultMessage="Hi Rijan, I visited your portfolio and would like to discuss a project!"
+        />
       </div>
     </ScrollRevealProvider>
   );

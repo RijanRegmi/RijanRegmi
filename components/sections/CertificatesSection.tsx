@@ -53,7 +53,7 @@ export default function CertificatesSection() {
 
   return (
     <>
-      <section id="certificates" className="py-24 bg-white border-t border-slate-200/80 relative overflow-hidden w-full max-w-full">
+      <section id="certificates" aria-label="Verified Certificates & Accreditations" className="py-24 bg-white border-t border-slate-200/80 relative overflow-hidden w-full max-w-full">
         {/* Soft Ambient Radial Backlights */}
         <div className="absolute top-10 right-10 w-96 h-96 bg-purple-200/30 rounded-full blur-[100px] pointer-events-none -z-0" />
         <div className="absolute bottom-10 left-10 w-96 h-96 bg-fuchsia-100/30 rounded-full blur-[100px] pointer-events-none -z-0" />
@@ -66,7 +66,7 @@ export default function CertificatesSection() {
               Verified Credentials
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 mt-2 tracking-tight">
-              Certificates & Accreditations
+              Certificates &amp; Accreditations
             </h2>
             <p className="text-slate-600 text-sm sm:text-base mt-3">
               Industry-recognized certifications and professional credentials validating technical domain expertise and practical execution.
@@ -84,7 +84,7 @@ export default function CertificatesSection() {
               return (
                 <div
                   key={cert.id}
-                  className={`rounded-3xl bg-slate-50/80 border border-slate-200/90 hover:border-purple-500/40 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-purple-900/10 transition-all duration-300 overflow-hidden reveal-up delay-${index + 1}`}
+                  className={`rounded-3xl bg-slate-50/80 border border-slate-200/90 hover:border-purple-500/40 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-purple-900/10 transition-shadow duration-300 overflow-hidden reveal-up delay-${index + 1}`}
                 >
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 p-6 sm:p-8 lg:p-10 items-center">
                     {/* Left Column: Certificate Visual Frame with Interactive Zoom & Slider */}
@@ -102,7 +102,7 @@ export default function CertificatesSection() {
                             <img
                               key={slide.image}
                               src={slide.image}
-                              alt={slide.title || `${cert.title} certificate`}
+                              alt={`${cert.title} - ${slide.label} credential view`}
                               className={`absolute inset-0 w-full h-full object-contain p-2 sm:p-3 transition-opacity duration-300 ease-in-out ${
                                 idx === currentSlideIndex
                                   ? 'opacity-100 z-10'
@@ -209,7 +209,7 @@ export default function CertificatesSection() {
                             {cert.subtitle}
                           </p>
                           <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1.5">
-                            Issued by <span className="font-semibold text-slate-800">{cert.issuer}</span> • Director: <span className="font-semibold text-slate-800">{cert.director}</span>
+                            Authority: <span className="font-semibold text-slate-800">{cert.issuer}</span> • Instructor: <span className="font-semibold text-slate-800">{cert.director}</span>
                           </p>
                         </div>
 
@@ -235,7 +235,7 @@ export default function CertificatesSection() {
                         {/* Skills / Domain Tags */}
                         <div className="pt-2 flex flex-col items-center lg:items-start w-full">
                           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2 text-center lg:text-left">
-                            Competencies & Tools Covered
+                            Competencies &amp; Tools Covered
                           </span>
                           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2">
                             {cert.tags.map((tag, i) => (
@@ -250,7 +250,7 @@ export default function CertificatesSection() {
                         </div>
                       </div>
 
-                      {/* Bottom Row: CTA Button & Credential ID */}
+                      {/* Bottom Row: CTA Button & Credential ID (with rel='nofollow noopener noreferrer') */}
                       <div className="pt-4 border-t border-slate-200/90 flex flex-col lg:flex-row items-center justify-between gap-3 sm:gap-4 w-full">
                         <div className="text-xs text-slate-500 font-mono text-center lg:text-left">
                           <span className="text-slate-400">
@@ -265,11 +265,12 @@ export default function CertificatesSection() {
                           <a
                             href={cert.verificationUrl}
                             target="_blank"
-                            rel="noopener noreferrer"
+                            rel="nofollow noopener noreferrer"
+                            aria-label={`${cert.actionLabel || 'Verify Official Certificate'} for ${cert.title}`}
                             className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] hover:from-[#a21caf] hover:to-[#6b21a8] text-white font-bold text-sm shadow-lg shadow-purple-900/25 transition-all hover:scale-105 active:scale-95 cursor-pointer w-full sm:w-auto"
                           >
                             <Award size={16} />
-                            <span>{cert.actionLabel || 'View Official Certificate'}</span>
+                            <span>{cert.actionLabel || 'Verify Official Certificate'}</span>
                             <ExternalLink size={15} />
                           </a>
                         </div>

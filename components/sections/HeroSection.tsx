@@ -28,7 +28,7 @@ export default function HeroSection() {
               Rijan Regmi
             </h1>
             <h2 className="text-base xs:text-lg sm:text-2xl lg:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] tracking-wide uppercase pt-1 reveal-up delay-3">
-              UI/UX & Full-Stack Developer
+              UI/UX &amp; Full-Stack Developer
             </h2>
           </div>
 
