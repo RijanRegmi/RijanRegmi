@@ -617,7 +617,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-[#a855f7] selection:text-white">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-[#a855f7] selection:text-white w-full max-w-full overflow-x-hidden">
       {/* Floating Navbar (Self-contained, dark glass pill design) */}
       <FloatingNavbar />
 
@@ -750,7 +750,7 @@ export default function HomePage() {
       </section>
 
       {/* About Section (Centered & Clean Spacing on Mobile) */}
-      <section id="about" className="py-20 sm:py-24 bg-white border-t border-slate-200/80 relative">
+      <section id="about" className="py-20 sm:py-24 bg-white border-t border-slate-200/80 relative overflow-hidden w-full max-w-full">
         <div className="max-w-md md:max-w-7xl mx-auto px-8 sm:px-12 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-14 sm:gap-16 md:gap-12 items-start">
 
@@ -887,7 +887,7 @@ export default function HomePage() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-20 bg-slate-50/80 border-t border-slate-200/80">
+      <section id="skills" className="py-20 bg-slate-50/80 border-t border-slate-200/80 relative overflow-hidden w-full max-w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <span className="text-xs uppercase tracking-widest text-[#9333ea] font-bold">Core Stack</span>
@@ -927,7 +927,7 @@ export default function HomePage() {
       </section>
 
       {/* Certificates & Accreditations Section */}
-      <section id="certificates" className="py-24 bg-white border-t border-slate-200/80 relative">
+      <section id="certificates" className="py-24 bg-white border-t border-slate-200/80 relative overflow-hidden w-full max-w-full">
         {/* Soft Ambient Radial Backlights */}
         <div className="absolute top-10 right-10 w-96 h-96 bg-purple-200/30 rounded-full blur-[100px] pointer-events-none -z-0" />
         <div className="absolute bottom-10 left-10 w-96 h-96 bg-fuchsia-100/30 rounded-full blur-[100px] pointer-events-none -z-0" />
@@ -1158,7 +1158,7 @@ export default function HomePage() {
       </section>
 
       {/* My Services Section */}
-      <section id="services" className="py-24 bg-white border-t border-slate-200/80 relative">
+      <section id="services" className="py-24 bg-white border-t border-slate-200/80 relative overflow-hidden w-full max-w-full">
         <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
           {/* Section Header */}
@@ -1234,7 +1234,7 @@ export default function HomePage() {
       </section>
 
       {/* Selected Projects Showcase */}
-      <section id="portfolio" className="py-24 bg-white border-t border-slate-200/80 relative">
+      <section id="portfolio" className="py-24 bg-white border-t border-slate-200/80 relative overflow-hidden w-full max-w-full">
         <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <span className="text-xs uppercase tracking-widest text-[#9333ea] font-bold">Live Deployments & Work</span>
@@ -1352,7 +1352,7 @@ export default function HomePage() {
       </section>
 
       {/* Engineering Blog & Case Studies Section */}
-      <section id="blog" className="py-24 bg-slate-50/80 border-t border-slate-200/80 relative">
+      <section id="blog" className="py-24 bg-slate-50/80 border-t border-slate-200/80 relative overflow-hidden w-full max-w-full">
         <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <span className="text-xs uppercase tracking-widest text-[#9333ea] font-bold">Engineering Insights</span>
@@ -1433,7 +1433,7 @@ export default function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-white border-t border-slate-200/80">
+      <section id="contact" className="py-20 bg-white border-t border-slate-200/80 relative overflow-hidden w-full max-w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Info */}
@@ -1634,7 +1634,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 bg-slate-900 text-center text-xs text-slate-400 border-t border-slate-800">
+      <footer className="py-8 bg-slate-900 text-center text-xs text-slate-400 border-t border-slate-800 w-full max-w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© {new Date().getFullYear()} Rijan Regmi. All rights reserved.</p>
           <div className="flex items-center gap-6 font-medium text-slate-300">

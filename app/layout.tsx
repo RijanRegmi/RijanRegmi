@@ -1,5 +1,11 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata: Metadata = {
   title: 'Rijan Regmi | Full-Stack Developer & Software Engineer',
@@ -17,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="antialiased min-h-screen selection:bg-indigo-500 selection:text-white">
+    <html lang="en" className="w-full max-w-full overflow-x-hidden">
+      <body className="antialiased min-h-screen selection:bg-purple-500 selection:text-white w-full max-w-full overflow-x-hidden bg-[#F8FAFC] text-slate-900">
         {children}
       </body>
     </html>

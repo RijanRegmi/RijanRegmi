@@ -270,7 +270,7 @@ export default function FloatingNavbar({
   const brandFirstClass = isDark ? 'text-white' : 'text-slate-950';
 
   return (
-    <header className="fixed top-2.5 sm:top-4 left-0 right-0 z-50 w-full px-2 sm:px-4 md:px-6 pointer-events-none transition-all duration-500">
+    <header className="fixed top-2.5 sm:top-4 left-0 right-0 z-50 w-full max-w-[100vw] box-border px-2 sm:px-4 md:px-6 pointer-events-none transition-all duration-500">
       {/* Centered spacious container */}
       <div
         ref={navContainerRef}
