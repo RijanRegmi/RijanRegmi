@@ -50,9 +50,9 @@ export default function ServicesSection() {
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-lg font-bold text-slate-900 group-hover:text-purple-700 transition-colors mt-4 tracking-tight">
+                  <p className="text-lg font-bold text-slate-900 group-hover:text-purple-700 transition-colors mt-4 tracking-tight">
                     {service.title}
-                  </h3>
+                  </p>
                   <p className="text-xs sm:text-[13px] text-slate-600 leading-relaxed mt-2">
                     {service.description}
                   </p>
@@ -75,6 +75,7 @@ export default function ServicesSection() {
                     className="inline-flex items-center gap-1.5 text-xs font-bold text-[#9333ea] hover:text-purple-800 transition-colors"
                   >
                     <span>Inquire Service</span>
+                    <span className="sr-only"> for {service.title}</span>
                     <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
                   </a>
                 </div>

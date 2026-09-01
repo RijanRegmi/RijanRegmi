@@ -85,6 +85,7 @@ export default function BlogSection() {
                 >
                   <BookOpen size={14} />
                   <span>Read Full Case Study</span>
+                  <span className="sr-only">: {post.title}</span>
                   <ArrowRight size={14} />
                 </Link>
               </div>

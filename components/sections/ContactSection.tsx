@@ -90,7 +90,8 @@ export default function ContactSection() {
                 <div>
                   <span className="text-xs text-slate-500 block">Email</span>
                   <a href="mailto:rijanregmi8@gmail.com" className="text-sm font-semibold text-slate-900 hover:text-[#9333ea] transition-colors">
-                    rijanregmi8@gmail.com
+                    <span>rijanregmi8@gmail.com</span>
+                    <span className="sr-only"> (Contact Form Submission)</span>
                   </a>
                 </div>
               </div>
@@ -102,7 +103,8 @@ export default function ContactSection() {
                 <div>
                   <span className="text-xs text-slate-500 block">Phone</span>
                   <a href="tel:+9779869061333" className="text-sm font-semibold text-slate-900 hover:text-[#9333ea] transition-colors">
-                    + (977) 9869061333
+                    <span>+ (977) 9869061333</span>
+                    <span className="sr-only"> (Direct Contact Line)</span>
                   </a>
                 </div>
               </div>
@@ -125,45 +127,45 @@ export default function ContactSection() {
                 <a
                   href="https://www.instagram.com/rijanregmi_"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="nofollow noopener noreferrer"
                   className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-[#9333ea] text-slate-700 hover:text-white border border-slate-200/80 hover:border-purple-500 transition-all flex items-center justify-center shadow-md shadow-slate-200/60 hover:shadow-xl hover:shadow-purple-900/20 hover:scale-110 cursor-pointer"
-                  aria-label="Instagram"
+                  aria-label="Instagram Profile Link"
                 >
                   <Instagram size={19} />
                 </a>
                 <a
                   href="https://www.linkedin.com/in/rijan-regmi-a720372b3"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="nofollow noopener noreferrer"
                   className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-[#9333ea] text-slate-700 hover:text-white border border-slate-200/80 hover:border-purple-500 transition-all flex items-center justify-center shadow-md shadow-slate-200/60 hover:shadow-xl hover:shadow-purple-900/20 hover:scale-110 cursor-pointer"
-                  aria-label="LinkedIn"
+                  aria-label="LinkedIn Profile Link"
                 >
                   <Linkedin size={19} />
                 </a>
                 <a
                   href="https://github.com/RijanRegmi"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="nofollow noopener noreferrer"
                   className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-[#9333ea] text-slate-700 hover:text-white border border-slate-200/80 hover:border-purple-500 transition-all flex items-center justify-center shadow-md shadow-slate-200/60 hover:shadow-xl hover:shadow-purple-900/20 hover:scale-110 cursor-pointer"
-                  aria-label="GitHub"
+                  aria-label="GitHub Profile Link"
                 >
                   <Github size={19} />
                 </a>
                 <a
                   href="https://x.com/rijanregmi_"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="nofollow noopener noreferrer"
                   className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-[#9333ea] text-slate-700 hover:text-white border border-slate-200/80 hover:border-purple-500 transition-all flex items-center justify-center shadow-md shadow-slate-200/60 hover:shadow-xl hover:shadow-purple-900/20 hover:scale-110 cursor-pointer"
-                  aria-label="X"
+                  aria-label="X Profile Link"
                 >
                   <XIcon size={17} />
                 </a>
                 <a
                   href="https://www.facebook.com/rijan.regmi.946"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="nofollow noopener noreferrer"
                   className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-[#9333ea] text-slate-700 hover:text-white border border-slate-200/80 hover:border-purple-500 transition-all flex items-center justify-center shadow-md shadow-slate-200/60 hover:shadow-xl hover:shadow-purple-900/20 hover:scale-110 cursor-pointer"
-                  aria-label="Facebook"
+                  aria-label="Facebook Profile Link"
                 >
                   <Facebook size={19} />
                 </a>
@@ -173,7 +175,7 @@ export default function ContactSection() {
 
           {/* Contact Form */}
           <div className="bg-white p-5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50 reveal-right delay-2">
-            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-5 sm:mb-6">Send a Message</h3>
+            <p className="text-xl sm:text-2xl font-bold text-slate-900 mb-5 sm:mb-6">Send a Message</p>
 
             {submitStatus.message && (
               <div

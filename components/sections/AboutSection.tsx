@@ -29,9 +29,9 @@ export default function AboutSection() {
                 <div className="w-12 h-0.5 bg-[#a855f7] mt-1.5 rounded-full" />
               </div>
 
-              <h3 className="text-base sm:text-lg font-bold text-slate-800 mb-3 leading-snug">
+              <p className="text-base sm:text-lg font-bold text-slate-800 mb-3 leading-snug">
                 A Web and Software Designer / Developer
-              </h3>
+              </p>
 
               <p className="text-slate-600 text-sm leading-relaxed mb-6 font-normal">
                 A passionate Web and Software Designer/Developer dedicated to creating innovative digital experiences.
@@ -46,6 +46,7 @@ export default function AboutSection() {
               >
                 <Printer size={15} className="group-hover:scale-110 transition-transform" />
                 <span>Download My CV</span>
+                <span className="sr-only"> (Full Professional Resume)</span>
               </a>
             </div>
           </div>
@@ -54,9 +55,9 @@ export default function AboutSection() {
           <div className="flex flex-col justify-between h-full md:border-r md:border-slate-200 md:pr-8 space-y-6 reveal-up delay-2">
             <div>
               <div className="relative inline-block mb-4 sm:mb-6">
-                <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                <p className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
                   Personal Info
-                </h2>
+                </p>
                 <div className="w-12 h-0.5 bg-[#a855f7] mt-1.5 rounded-full" />
               </div>
 
@@ -68,7 +69,8 @@ export default function AboutSection() {
                 <li className="text-slate-700">
                   <strong className="text-slate-900 font-semibold">Email :</strong>{' '}
                   <a href="mailto:rijanregmi8@gmail.com" className="text-[#9333ea] hover:underline ml-1">
-                    rijanregmi8@gmail.com
+                    <span>rijanregmi8@gmail.com</span>
+                    <span className="sr-only"> (Personal Direct Contact)</span>
                   </a>
                 </li>
                 <li className="text-slate-700">
@@ -84,19 +86,19 @@ export default function AboutSection() {
 
             {/* Social icons row below Personal Info */}
             <div className="flex items-center gap-4 pt-4 text-[#9333ea]">
-              <a href="https://www.facebook.com/rijan.regmi.946" target="_blank" rel="noopener noreferrer" className="hover:text-purple-800 transition-colors" aria-label="Facebook">
+              <a href="https://www.facebook.com/rijan.regmi.946" target="_blank" rel="nofollow noopener noreferrer" className="hover:text-purple-800 transition-colors" aria-label="Facebook Page">
                 <Facebook size={18} />
               </a>
-              <a href="https://x.com/rijanregmi_" target="_blank" rel="noopener noreferrer" className="hover:text-purple-800 transition-colors" aria-label="X">
+              <a href="https://x.com/rijanregmi_" target="_blank" rel="nofollow noopener noreferrer" className="hover:text-purple-800 transition-colors" aria-label="X Account">
                 <XIcon size={16} />
               </a>
-              <a href="https://www.instagram.com/rijanregmi_" target="_blank" rel="noopener noreferrer" className="hover:text-purple-800 transition-colors" aria-label="Instagram">
+              <a href="https://www.instagram.com/rijanregmi_" target="_blank" rel="nofollow noopener noreferrer" className="hover:text-purple-800 transition-colors" aria-label="Instagram Account">
                 <Instagram size={18} />
               </a>
-              <a href="https://github.com/RijanRegmi" target="_blank" rel="noopener noreferrer" className="hover:text-purple-800 transition-colors" aria-label="GitHub">
+              <a href="https://github.com/RijanRegmi" target="_blank" rel="nofollow noopener noreferrer" className="hover:text-purple-800 transition-colors" aria-label="GitHub Account">
                 <Github size={18} />
               </a>
-              <a href="https://www.linkedin.com/in/rijan-regmi-a720372b3" target="_blank" rel="noopener noreferrer" className="hover:text-purple-800 transition-colors" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/rijan-regmi-a720372b3" target="_blank" rel="nofollow noopener noreferrer" className="hover:text-purple-800 transition-colors" aria-label="LinkedIn Account">
                 <Linkedin size={18} />
               </a>
             </div>
@@ -105,9 +107,9 @@ export default function AboutSection() {
           {/* Column 3: My Expertise */}
           <div className="space-y-6 reveal-right delay-3">
             <div className="relative inline-block mb-4 sm:mb-6">
-              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+              <p className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
                 My Expertise
-              </h2>
+              </p>
               <div className="w-12 h-0.5 bg-[#a855f7] mt-1.5 rounded-full" />
             </div>
 
@@ -118,7 +120,7 @@ export default function AboutSection() {
                   <Layout size={20} />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">UX Design</h4>
+                  <p className="text-sm font-bold text-slate-900">UX Design</p>
                   <p className="text-xs text-slate-500 mt-0.5">Crafting intuitive and user centered designs.</p>
                 </div>
               </div>
@@ -129,7 +131,7 @@ export default function AboutSection() {
                   <Code2 size={20} />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">Web Development</h4>
+                  <p className="text-sm font-bold text-slate-900">Web Development</p>
                   <p className="text-xs text-slate-500 mt-0.5">Building responsive and dynamic websites.</p>
                 </div>
               </div>
@@ -140,7 +142,7 @@ export default function AboutSection() {
                   <TrendingUp size={20} />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">Software Development</h4>
+                  <p className="text-sm font-bold text-slate-900">Software Development</p>
                   <p className="text-xs text-slate-500 mt-0.5">Developing robust and scalable software solutions.</p>
                 </div>
               </div>

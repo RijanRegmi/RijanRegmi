@@ -40,7 +40,7 @@ export default function SkillsSection() {
 
               {/* Text Content */}
               <div className="relative z-10 w-full flex flex-col items-center">
-                <h4 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-purple-700 transition-colors tracking-tight">{skill.name}</h4>
+                <p className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-purple-700 transition-colors tracking-tight">{skill.name}</p>
                 <span className="mt-2.5 inline-flex items-center px-3 py-0.5 rounded-full text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200 group-hover:border-purple-400 transition-colors">
                   {skill.level}
                 </span>

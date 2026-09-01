@@ -504,6 +504,7 @@ export default function FloatingNavbar({
                         } transition-all whitespace-nowrap`}
                     >
                       <span>{item.label}</span>
+                      <span className="sr-only"> (Mobile Menu Link)</span>
                       {item.badge && (
                         <span className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full border ${themeStyles.badge}`}>
                           {item.badge}
@@ -518,6 +519,7 @@ export default function FloatingNavbar({
                         } transition-all cursor-pointer whitespace-nowrap`}
                     >
                       <span>{item.label}</span>
+                      <span className="sr-only"> (Mobile Menu Link)</span>
                       {item.badge && (
                         <span className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full border ${themeStyles.badge}`}>
                           {item.badge}
@@ -544,7 +546,8 @@ export default function FloatingNavbar({
                   className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl font-semibold text-sm text-white transition-all whitespace-nowrap cursor-pointer shadow-md ${themeStyles.ctaBtn}`}
                 >
                   <Send className="w-4 h-4 shrink-0 text-white" />
-                  <span className="text-white font-semibold">{ctaLabel}</span>
+                  <span>{ctaLabel}</span>
+                  <span className="sr-only"> (Mobile Header Action)</span>
                 </a>
               </div>
             </div>

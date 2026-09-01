@@ -23,6 +23,7 @@ export interface CertificateItem {
   tags: string[];
   highlights: { label: string; value: string }[];
   actionLabel?: string;
+  skillsLabel?: string;
 }
 
 export const CERTIFICATES: CertificateItem[] = [
@@ -48,6 +49,7 @@ export const CERTIFICATES: CertificateItem[] = [
     ],
     summary: 'Successfully completed all 17 comprehensive courses (56 days) of the Footylytics Football Intelligence Programme, mastering data science on real match data, mathematical models, tactical analysis, tools & dashboard engineering.',
     director: 'Manoj Shrestha (Programme Director)',
+    skillsLabel: 'Analytics & Intelligence Stack',
     tags: [
       'Football Intelligence',
       'Data Science',
@@ -95,7 +97,8 @@ export const CERTIFICATES: CertificateItem[] = [
       },
     ],
     summary: 'Comprehensive 3-tier professional technical scouting and talent identification certification series from A.F.C.A.S. and S4 Scouting. Covers foundational to advanced player evaluation, tactical match scouting, opposition reporting, and recruitment metrics.',
-    director: 'Ged Searson (Managing Director)',
+    director: 'Ged Searson (Technical Lead & MD)',
+    skillsLabel: 'Scouting Modules & Match Tools',
     tags: [
       'Talent Identification',
       'Technical Scouting',
@@ -117,7 +120,7 @@ export const CERTIFICATES: CertificateItem[] = [
     id: 'afcas-positional-scouting',
     title: 'A.F.C.A.S. Positional Scouting & Recruitment',
     subtitle: 'Professional Football Workshop Series (Modules 1 – 3)',
-    issuer: 'The Association of Football Coaches & Scouts (A.F.C.A.S.)',
+    issuer: 'A.F.C.A.S. & CIMSPA Partner',
     endorsement: 'CIMSPA Education Partner & S4 Scouting Accredited',
     issueDate: 'January – February 2026',
     credentialId: 'AFCAS Workshop Modules 1, 2 & 3',
@@ -144,7 +147,8 @@ export const CERTIFICATES: CertificateItem[] = [
       },
     ],
     summary: 'Interactive professional football webinar workshop series delivered directly by Managing Director Ged Searson. Focuses on in-depth positional role profiling, position-specific key performance indicators, live match recruitment analysis, and modern scouting workflows endorsed by CIMSPA.',
-    director: 'Ged Searson (Managing Director)',
+    director: 'Ged Searson (Workshop Director)',
+    skillsLabel: 'Recruitment & Tactical Domains',
     tags: [
       'Positional Scouting',
       'Player Recruitment',

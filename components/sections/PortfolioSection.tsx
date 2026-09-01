@@ -27,10 +27,12 @@ export default function PortfolioSection() {
             >
               {/* 1. Website Screenshot with subtle bottom gradient fade & Hover Action Overlay */}
               <div className="relative h-64 sm:h-80 md:h-96 w-full overflow-hidden bg-slate-900">
-                <a
-                  href={project.url !== '#' ? project.url : undefined}
-                  target={project.url !== '#' ? '_blank' : undefined}
-                  rel={project.url !== '#' ? 'noopener noreferrer' : undefined}
+                <div
+                  onClick={() => {
+                    if (project.url !== '#') {
+                      window.open(project.url, '_blank', 'noopener,noreferrer');
+                    }
+                  }}
                   className={`block w-full h-full relative ${project.url !== '#' ? 'cursor-pointer' : 'cursor-default'}`}
                   title={project.url !== '#' ? `Visit ${project.title}` : undefined}
                 >
@@ -47,7 +49,7 @@ export default function PortfolioSection() {
 
                   {/* Hover Container Reveal: "Visit Website" / "View Live Demo" Pill */}
                   {project.url !== '#' && (
-                    <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4 pointer-events-none">
                       <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] text-white font-bold text-xs sm:text-sm shadow-2xl shadow-purple-900/60 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
                         <Sparkles size={14} />
                         <span>{project.actionText}</span>
@@ -55,7 +57,7 @@ export default function PortfolioSection() {
                       </div>
                     </div>
                   )}
-                </a>
+                </div>
               </div>
 
               {/* 2. Card Content Body */}
@@ -112,10 +114,11 @@ export default function PortfolioSection() {
                     <a
                       href={project.url}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="nofollow noopener noreferrer"
                       className="text-xs font-bold uppercase tracking-wider text-[#9333ea] hover:text-purple-800 group-hover:underline inline-flex items-center gap-1.5 transition-colors"
                     >
                       <span>{project.actionText}</span>
+                      <span className="sr-only">: {project.title}</span>
                       <ExternalLink size={13} />
                     </a>
                   ) : (

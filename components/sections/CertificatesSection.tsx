@@ -235,7 +235,7 @@ export default function CertificatesSection() {
                         {/* Skills / Domain Tags */}
                         <div className="pt-2 flex flex-col items-center lg:items-start w-full">
                           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2 text-center lg:text-left">
-                            Competencies &amp; Tools Covered
+                            {cert.skillsLabel || 'Competencies & Tools Covered'}
                           </span>
                           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2">
                             {cert.tags.map((tag, i) => (
@@ -270,7 +270,8 @@ export default function CertificatesSection() {
                             className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] hover:from-[#a21caf] hover:to-[#6b21a8] text-white font-bold text-sm shadow-lg shadow-purple-900/25 transition-all hover:scale-105 active:scale-95 cursor-pointer w-full sm:w-auto"
                           >
                             <Award size={16} />
-                            <span>{cert.actionLabel || 'Verify Official Certificate'}</span>
+                            <span>{cert.actionLabel || 'View Official Certificate'}</span>
+                            <span className="sr-only">: {cert.title}</span>
                             <ExternalLink size={15} />
                           </a>
                         </div>
