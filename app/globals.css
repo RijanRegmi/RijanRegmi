@@ -88,8 +88,13 @@ textarea:focus, textarea:focus-visible {
 }
 
 /* ─── Transitions ───────────────────────────────────────────── */
-button, a, input, select, textarea {
-  transition: all 0.15s ease;
+/* NOTE: Never use `transition: all` — it re-triggers layout on every scroll event. */
+button, a {
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease,
+    box-shadow 0.15s ease, opacity 0.15s ease;
+}
+input, select, textarea {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 button:not(:disabled):active {
@@ -318,38 +323,33 @@ button:not(:disabled):active {
   will-change: transform, opacity;
 }
 
-/* ─── Universal Staggered Scroll Reveal Animations (Fail-safe RopeWallet pattern) ─── */
-/* Default state is visible so content can NEVER be blank */
+/* ─── Universal Staggered Scroll Reveal Animations ─── */
+/* will-change is NOT set here — it is applied dynamically by ScrollRevealProvider
+   only while the element is being observed, and cleared after the transition ends.
+   This prevents dozens of compositor layers from being created at page load. */
 .reveal-init,
-.reveal-up,
-.reveal-left,
-.reveal-right,
+.reveal-up {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-48px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(48px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .reveal-scale {
-  opacity: 1;
-  transform: translateY(0) translateX(0) scale(1);
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-/* Waiting to animate on scroll (applied dynamically by observer only to off-screen elements) */
-.js-reveal-pending {
-  opacity: 0 !important;
-  transform: translateY(28px) !important;
-}
-
-.js-reveal-pending.reveal-left,
-.js-reveal-pending.slide-left {
-  transform: translateX(-40px) !important;
-}
-
-.js-reveal-pending.reveal-right,
-.js-reveal-pending.slide-right {
-  transform: translateX(40px) !important;
-}
-
-.js-reveal-pending.reveal-scale,
-.js-reveal-pending.scale-up {
-  transform: scale(0.94) translateY(18px) !important;
+  opacity: 0;
+  transform: scale(0.92) translateY(24px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Revealed state: smooth animation into final place */
@@ -358,14 +358,22 @@ button:not(:disabled):active {
   transform: translateY(0) translateX(0) scale(1) !important;
 }
 
-/* Stagger delay utilities (Spaced for smooth cascade) */
-.stagger-1, .delay-1 { transition-delay: 0.06s; }
-.stagger-2, .delay-2 { transition-delay: 0.14s; }
-.stagger-3, .delay-3 { transition-delay: 0.22s; }
-.stagger-4, .delay-4 { transition-delay: 0.30s; }
-.stagger-5, .delay-5 { transition-delay: 0.38s; }
-.stagger-6, .delay-6 { transition-delay: 0.46s; }
-.stagger-7, .delay-7 { transition-delay: 0.54s; }
-.stagger-8, .delay-8 { transition-delay: 0.62s; }
+/* Stagger delay utilities */
+.stagger-1, .delay-1 { transition-delay: 0.08s; }
+.stagger-2, .delay-2 { transition-delay: 0.20s; }
+.stagger-3, .delay-3 { transition-delay: 0.32s; }
+.stagger-4, .delay-4 { transition-delay: 0.44s; }
+.stagger-5, .delay-5 { transition-delay: 0.56s; }
+.stagger-6, .delay-6 { transition-delay: 0.68s; }
+.stagger-7, .delay-7 { transition-delay: 0.80s; }
+.stagger-8, .delay-8 { transition-delay: 0.92s; }
+
+/* ─── Section style containment ─── */
+/* 'contain: style' prevents child counters/properties from leaking out.
+   We intentionally omit 'paint' and 'layout' to avoid clipping absolutely-
+   positioned decorative orbs and to preserve the floating navbar z-stack. */
+section {
+  contain: style;
+}
 
 /* end of animations */
