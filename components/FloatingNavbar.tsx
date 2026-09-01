@@ -101,31 +101,67 @@ export default function FloatingNavbar({
     };
   }, [mobileMenuOpen]);
 
-  // Scroll Tracker — restored to original working code (git a795f53)
+  // Robust Unblockable Sentinel IntersectionObserver for Brand Collapse
   useEffect(() => {
+    let sentinel = document.getElementById('navbar-scroll-sentinel');
+    let created = false;
+    if (!sentinel) {
+      sentinel = document.createElement('div');
+      sentinel.id = 'navbar-scroll-sentinel';
+      sentinel.style.position = 'absolute';
+      sentinel.style.top = '0px';
+      sentinel.style.left = '0px';
+      sentinel.style.width = '100%';
+      sentinel.style.height = '35px';
+      sentinel.style.pointerEvents = 'none';
+      sentinel.style.visibility = 'hidden';
+      sentinel.style.zIndex = '-9999';
+      document.body.prepend(sentinel);
+      created = true;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // When sentinel is intersecting with viewport top, user is at top -> isScrolled = false
+        // When sentinel scrolls out of viewport, user is scrolled down -> isScrolled = true
+        setIsScrolled(!entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(sentinel);
+
+    // Synchronous scroll handler backup
     const checkScroll = () => {
-      const currentScroll =
-        window.scrollY ||
+      const top =
         window.pageYOffset ||
+        window.scrollY ||
         document.documentElement.scrollTop ||
         document.body.scrollTop ||
+        (document.scrollingElement ? document.scrollingElement.scrollTop : 0) ||
         0;
-      if (currentScroll > 20) {
+
+      if (top > 25) {
         setIsScrolled(true);
-      } else {
+      } else if (top === 0) {
         setIsScrolled(false);
       }
     };
-    checkScroll();
-    window.addEventListener('scroll', checkScroll, { passive: true });
+
+    window.addEventListener('scroll', checkScroll, { passive: true, capture: true });
+    document.addEventListener('scroll', checkScroll, { passive: true, capture: true });
     window.addEventListener('wheel', checkScroll, { passive: true });
     window.addEventListener('touchmove', checkScroll, { passive: true });
-    document.addEventListener('scroll', checkScroll, { passive: true });
+
     return () => {
-      window.removeEventListener('scroll', checkScroll);
+      observer.disconnect();
+      if (created && sentinel && sentinel.parentNode) {
+        sentinel.parentNode.removeChild(sentinel);
+      }
+      window.removeEventListener('scroll', checkScroll, { capture: true });
+      document.removeEventListener('scroll', checkScroll, { capture: true });
       window.removeEventListener('wheel', checkScroll);
       window.removeEventListener('touchmove', checkScroll);
-      document.removeEventListener('scroll', checkScroll);
     };
   }, []);
 
@@ -150,6 +186,14 @@ export default function FloatingNavbar({
     }
 
     const handleActiveSection = () => {
+      const currentRaw =
+        window.pageYOffset ||
+        window.scrollY ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        (document.scrollingElement ? document.scrollingElement.scrollTop : 0) ||
+        0;
+
       if (Date.now() - lastClickTimeRef.current < 900) {
         return;
       }
@@ -162,7 +206,7 @@ export default function FloatingNavbar({
       const skillsEl = document.getElementById('skills');
       const aboutEl = document.getElementById('about');
 
-      const scrollPos = (window.scrollY || document.documentElement.scrollTop || 0) + 220;
+      const scrollPos = currentRaw + 220;
 
       if (contactEl && scrollPos >= contactEl.offsetTop - 120) {
         setActiveHref('#contact');
@@ -184,9 +228,11 @@ export default function FloatingNavbar({
     };
 
     handleActiveSection();
-    window.addEventListener('scroll', handleActiveSection, { passive: true });
+    window.addEventListener('scroll', handleActiveSection, { passive: true, capture: true });
+    document.addEventListener('scroll', handleActiveSection, { passive: true, capture: true });
     return () => {
-      window.removeEventListener('scroll', handleActiveSection);
+      window.removeEventListener('scroll', handleActiveSection, { capture: true });
+      document.removeEventListener('scroll', handleActiveSection, { capture: true });
     };
   }, [pathname]);
 
@@ -308,12 +354,19 @@ export default function FloatingNavbar({
                 />
               </div>
 
-              {/* Splitting Brand Text — restored to original working classes (git a795f53) */}
+              {/* Splitting Brand Text: Emerges & splits out from behind the logo icon */}
               <div
-                className={`relative z-10 flex flex-col justify-center overflow-hidden py-1 transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] origin-left will-change-[max-width,transform,opacity] ${isScrolled
+                style={{
+                  maxWidth: isScrolled ? 0 : 280,
+                  opacity: isScrolled ? 0 : 1,
+                  transform: isScrolled ? 'translateX(-24px) scale(0.9)' : 'translateX(0) scale(1)',
+                  pointerEvents: isScrolled ? 'none' : 'auto',
+                }}
+                className={`relative z-10 flex flex-col justify-center overflow-hidden py-1 transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] origin-left will-change-[max-width,transform,opacity] ${
+                  isScrolled
                     ? 'max-w-0 opacity-0 -translate-x-12 scale-90 ml-0 pointer-events-none'
                     : 'max-w-[280px] opacity-100 translate-x-0 scale-100 ml-2.5 sm:ml-3.5'
-                  }`}
+                }`}
               >
                 <div className="flex items-baseline font-black tracking-tight text-xl sm:text-2xl leading-none whitespace-nowrap">
                   <span className={brandFirstClass}>{brandNameFirst}</span>

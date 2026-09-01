@@ -553,29 +553,68 @@ export default function HomePage() {
     };
   }, [modalCert]);
 
-  // Universal Staggered Scroll-Reveal Animations
+  // ─── Scroll-Reveal (Progressive, fail-safe architecture) ────────
   useEffect(() => {
-    const revealElements = document.querySelectorAll('.reveal-init');
-    let revealObserver: IntersectionObserver | null = null;
+    const selector = '.reveal-init, .reveal-up, .reveal-left, .reveal-right, .reveal-scale';
+    const vh = window.innerHeight || document.documentElement.clientHeight || 800;
 
-    if (revealElements.length > 0) {
-      revealObserver = new IntersectionObserver(
+    const revealEl = (el: Element) => {
+      el.classList.remove('js-reveal-pending');
+      el.classList.add('reveal-visible');
+    };
+
+    // 1. Mark only off-screen elements as pending, keep visible ones revealed
+    document.querySelectorAll<Element>(selector).forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top > vh) {
+        el.classList.add('js-reveal-pending');
+      } else {
+        revealEl(el);
+      }
+    });
+
+    // 2. IntersectionObserver reveals elements smoothly on scroll
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              entry.target.classList.add('reveal-visible');
-              revealObserver?.unobserve(entry.target);
+              revealEl(entry.target);
+              observer?.unobserve(entry.target);
             }
           });
         },
-        { threshold: 0.1 }
+        { threshold: 0.05, rootMargin: '0px 0px 100px 0px' }
       );
 
-      revealElements.forEach((el) => revealObserver?.observe(el));
+      document.querySelectorAll<Element>(selector).forEach((el) => observer?.observe(el));
     }
 
+    const handlePageScroll = () => {
+      const currentVh = window.innerHeight || document.documentElement.clientHeight || 800;
+      document.querySelectorAll<Element>('.js-reveal-pending').forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < currentVh + 100) {
+          revealEl(el);
+        }
+      });
+    };
+
+    handlePageScroll();
+    window.addEventListener('scroll', handlePageScroll, { passive: true });
+    window.addEventListener('resize', handlePageScroll, { passive: true });
+
+    // Safety timeout: guaranteed reveal after 1.5s so nothing is ever stuck hidden
+    const safetyTimer = setTimeout(() => {
+      document.querySelectorAll<Element>('.js-reveal-pending').forEach(revealEl);
+    }, 1500);
+
     return () => {
-      revealObserver?.disconnect();
+      clearTimeout(safetyTimer);
+      observer?.disconnect();
+      window.removeEventListener('scroll', handlePageScroll);
+      window.removeEventListener('resize', handlePageScroll);
     };
   }, []);
 
@@ -617,7 +656,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-[#a855f7] selection:text-white w-full max-w-full overflow-x-hidden">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-[#a855f7] selection:text-white w-full">
       {/* Floating Navbar (Self-contained, dark glass pill design) */}
       <FloatingNavbar />
 
@@ -630,8 +669,8 @@ export default function HomePage() {
         <div className="max-w-7xl w-full mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
 
           {/* Column: Info, Big Name, Role, Actions, Stats (Centered on Mobile, Left-aligned on Desktop) */}
-          <div className="lg:col-span-7 flex flex-col items-center text-center lg:items-start lg:text-left space-y-6 sm:space-y-8">
-            <div className="space-y-1.5 sm:space-y-2 w-full">
+          <div className="lg:col-span-7 flex flex-col items-center text-center lg:items-start lg:text-left space-y-6 sm:space-y-8 animate-hero-slide-left">
+            <div className="space-y-1.5 sm:space-y-2 w-full animate-hero-slide-left-1">
               <p className="text-xs sm:text-sm text-slate-500 font-bold tracking-widest uppercase">
                 Hi I am
               </p>
@@ -644,7 +683,7 @@ export default function HomePage() {
             </div>
 
             {/* Social Icons Row (Centered on Mobile) */}
-            <div className="flex items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-1 w-full">
+            <div className="flex items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-1 w-full animate-hero-slide-left-2">
               <a
                 href="https://www.instagram.com/rijanregmi_"
                 target="_blank"
@@ -693,7 +732,7 @@ export default function HomePage() {
             </div>
 
             {/* Action Buttons Row (Centered on Mobile with Equal Button Sizes) */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-1 w-full">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-1 w-full animate-hero-slide-left-3">
               <a
                 href="#contact"
                 className="w-[145px] sm:w-[170px] h-[48px] sm:h-[52px] inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] hover:from-[#a21caf] hover:to-[#6b21a8] text-white font-bold text-sm sm:text-base shadow-xl shadow-purple-900/25 transition-all hover:scale-105 active:scale-95"
@@ -710,7 +749,7 @@ export default function HomePage() {
             </div>
 
             {/* Stats Bar (Centered on Mobile) */}
-            <div className="pt-2 sm:pt-3 w-full flex justify-center lg:justify-start">
+            <div className="pt-2 sm:pt-3 w-full flex justify-center lg:justify-start animate-hero-slide-left-4">
               <div className="inline-flex items-center justify-center gap-4 sm:gap-8 lg:gap-10 bg-white/90 backdrop-blur-md border border-slate-200/90 rounded-2xl px-4 sm:px-7 py-3.5 sm:py-4 shadow-xl shadow-slate-900/5 w-full max-w-md sm:w-fit">
                 <div className="text-center">
                   <div className="text-xl sm:text-2xl lg:text-3xl font-black text-[#9333ea]">3+</div>
@@ -731,7 +770,7 @@ export default function HomePage() {
           </div>
 
           {/* Right Column: Circular Portrait (Centered) */}
-          <div className="lg:col-span-5 flex justify-center items-center pt-4 lg:pt-0">
+          <div className="lg:col-span-5 flex justify-center items-center pt-4 lg:pt-0 animate-hero-slide-right">
             <div className="relative w-[260px] h-[260px] sm:w-[360px] sm:h-[360px] lg:w-[460px] lg:h-[460px] rounded-full bg-gradient-to-b from-purple-100/70 to-slate-100 border border-purple-200/80 shadow-2xl flex items-center justify-center overflow-hidden group">
 
               {/* Backlight circular glow in RJN purple */}
@@ -749,13 +788,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About Section (Centered & Clean Spacing on Mobile) */}
+
       <section id="about" className="py-20 sm:py-24 bg-white border-t border-slate-200/80 relative overflow-hidden w-full max-w-full">
         <div className="max-w-md md:max-w-7xl mx-auto px-8 sm:px-12 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-14 sm:gap-16 md:gap-12 items-start">
 
             {/* Column 1: Who am I ? */}
-            <div className="flex flex-col justify-between h-full md:border-r md:border-slate-200 md:pr-8 space-y-6">
+            <div className="flex flex-col justify-between h-full md:border-r md:border-slate-200 md:pr-8 space-y-6 reveal-left delay-1">
               <div>
                 <div className="relative inline-block mb-4 sm:mb-6">
                   <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
@@ -786,7 +825,7 @@ export default function HomePage() {
             </div>
 
             {/* Column 2: Personal Info */}
-            <div className="flex flex-col justify-between h-full md:border-r md:border-slate-200 md:pr-8 space-y-6">
+            <div className="flex flex-col justify-between h-full md:border-r md:border-slate-200 md:pr-8 space-y-6 reveal-up delay-2">
               <div>
                 <div className="relative inline-block mb-4 sm:mb-6">
                   <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
@@ -838,7 +877,7 @@ export default function HomePage() {
             </div>
 
             {/* Column 3: My Expertise */}
-            <div className="space-y-6">
+            <div className="space-y-6 reveal-right delay-3">
               <div className="relative inline-block mb-4 sm:mb-6">
                 <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
                   My Expertise
@@ -889,7 +928,7 @@ export default function HomePage() {
       {/* Skills Section */}
       <section id="skills" className="py-20 bg-slate-50/80 border-t border-slate-200/80 relative overflow-hidden w-full max-w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="text-center max-w-2xl mx-auto mb-16 reveal-up delay-1">
             <span className="text-xs uppercase tracking-widest text-[#9333ea] font-bold">Core Stack</span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2 tracking-tight">Technical Proficiencies</h2>
             <p className="text-slate-600 text-sm sm:text-base mt-3">Technologies and tools used across full-stack projects</p>
@@ -899,7 +938,7 @@ export default function HomePage() {
             {SKILLS.map((skill, index) => (
               <div
                 key={index}
-                className="relative overflow-hidden p-6 sm:p-7 rounded-2xl text-center flex flex-col items-center justify-between min-h-[185px] bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-purple-500/50 shadow-md hover:shadow-xl hover:shadow-purple-900/10 transition-all duration-300 hover:-translate-y-1.5 group cursor-pointer"
+                className={`relative overflow-hidden p-6 sm:p-7 rounded-2xl text-center flex flex-col items-center justify-between min-h-[185px] bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-purple-500/50 shadow-md hover:shadow-xl hover:shadow-purple-900/10 transition-all duration-300 hover:-translate-y-1.5 group cursor-pointer reveal-scale delay-${(index % 5) + 1}`}
               >
                 {/* Ambient Subtle Radial Glow */}
                 <div className="absolute top-3 w-16 h-16 bg-purple-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-purple-400/25 transition-all duration-300" />
@@ -934,7 +973,7 @@ export default function HomePage() {
 
         <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Section Header */}
-          <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+          <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-20 reveal-up delay-1">
             <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-[#9333ea] font-bold">
               <Award size={14} className="text-[#9333ea]" />
               Verified Credentials
@@ -949,7 +988,7 @@ export default function HomePage() {
 
           {/* Certificate Showcase Cards */}
           <div className="space-y-12">
-            {CERTIFICATES.map((cert) => {
+            {CERTIFICATES.map((cert, index) => {
               const currentSlideIndex = certSlideIndices[cert.id] || 0;
               const currentSlide = cert.slides[currentSlideIndex] || cert.slides[0];
               const hasMultipleSlides = cert.slides.length > 1;
@@ -958,7 +997,7 @@ export default function HomePage() {
               return (
                 <div
                   key={cert.id}
-                  className="rounded-3xl bg-slate-50/80 border border-slate-200/90 hover:border-purple-500/40 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-purple-900/10 transition-all duration-300 overflow-hidden"
+                  className={`rounded-3xl bg-slate-50/80 border border-slate-200/90 hover:border-purple-500/40 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-purple-900/10 transition-all duration-300 overflow-hidden reveal-up delay-${index + 1}`}
                 >
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 p-6 sm:p-8 lg:p-10 items-center">
                     {/* Left Column: Certificate Visual Frame with Interactive Zoom & Slider */}
@@ -1162,7 +1201,7 @@ export default function HomePage() {
         <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
           {/* Section Header */}
-          <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+          <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-20 reveal-up delay-1">
             <span className="text-xs uppercase tracking-widest text-[#9333ea] font-bold">
               What I Offer
             </span>
@@ -1176,12 +1215,12 @@ export default function HomePage() {
 
           {/* 8-Card Responsive Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7">
-            {SERVICES.map((service) => {
+            {SERVICES.map((service, index) => {
               const IconComponent = service.icon;
               return (
                 <div
                   key={service.id}
-                  className="rounded-3xl p-6 sm:p-7 flex flex-col justify-between bg-white border border-slate-200/90 hover:border-purple-500/50 shadow-md hover:shadow-xl hover:shadow-purple-900/10 transition-all duration-300 hover:-translate-y-1.5 group relative overflow-hidden"
+                  className={`rounded-3xl p-6 sm:p-7 flex flex-col justify-between bg-white border border-slate-200/90 hover:border-purple-500/50 shadow-md hover:shadow-xl hover:shadow-purple-900/10 transition-all duration-300 hover:-translate-y-1.5 group relative overflow-hidden reveal-up delay-${(index % 4) + 1}`}
                 >
                   {/* Subtle Gradient Backlight on Hover */}
                   <div className={`absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br ${service.gradient} rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none`} />
@@ -1236,7 +1275,7 @@ export default function HomePage() {
       {/* Selected Projects Showcase */}
       <section id="portfolio" className="py-24 bg-white border-t border-slate-200/80 relative overflow-hidden w-full max-w-full">
         <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="text-center max-w-2xl mx-auto mb-16 reveal-up delay-1">
             <span className="text-xs uppercase tracking-widest text-[#9333ea] font-bold">Live Deployments & Work</span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 mt-2 tracking-tight">Featured Projects</h2>
             <p className="text-slate-600 text-sm sm:text-base mt-3">Click on any project screen to launch and explore the live web application</p>
@@ -1244,10 +1283,10 @@ export default function HomePage() {
 
           {/* 2-Column Wide Projects Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10">
-            {PROJECTS.map((project) => (
+            {PROJECTS.map((project, index) => (
               <div
                 key={project.id}
-                className="rounded-3xl overflow-hidden group flex flex-col bg-white border border-slate-200/90 hover:border-purple-500/40 shadow-xl shadow-slate-200/60 hover:shadow-2xl hover:shadow-purple-900/10 transition-all duration-300 hover:-translate-y-1.5"
+                className={`rounded-3xl overflow-hidden group flex flex-col bg-white border border-slate-200/90 hover:border-purple-500/40 shadow-xl shadow-slate-200/60 hover:shadow-2xl hover:shadow-purple-900/10 transition-all duration-300 hover:-translate-y-1.5 reveal-scale delay-${(index % 2) + 1}`}
               >
                 {/* 1. Website Screenshot with subtle bottom gradient fade & Hover Action Overlay */}
                 <div className="relative h-64 sm:h-80 md:h-96 w-full overflow-hidden bg-slate-900">
@@ -1354,17 +1393,17 @@ export default function HomePage() {
       {/* Engineering Blog & Case Studies Section */}
       <section id="blog" className="py-24 bg-slate-50/80 border-t border-slate-200/80 relative overflow-hidden w-full max-w-full">
         <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="text-center max-w-2xl mx-auto mb-16 reveal-up delay-1">
             <span className="text-xs uppercase tracking-widest text-[#9333ea] font-bold">Engineering Insights</span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 mt-2 tracking-tight">Architectural Deep-Dives</h2>
             <p className="text-slate-600 text-sm sm:text-base mt-3">Technical analysis and real-world implementation case studies of live production applications</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {BLOG_POSTS.map((post) => (
+            {BLOG_POSTS.map((post, index) => (
               <article
                 key={post.slug}
-                className="rounded-3xl overflow-hidden flex flex-col justify-between bg-white border border-slate-200/90 hover:border-purple-500/50 shadow-lg hover:shadow-xl hover:shadow-purple-900/10 transition-all duration-300 group hover:-translate-y-2"
+                className={`rounded-3xl overflow-hidden flex flex-col justify-between bg-white border border-slate-200/90 hover:border-purple-500/50 shadow-lg hover:shadow-xl hover:shadow-purple-900/10 transition-all duration-300 group hover:-translate-y-2 reveal-up delay-${index + 1}`}
               >
                 <div>
                   {/* Article Screenshot Frame */}
@@ -1437,7 +1476,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Info */}
-            <div className="space-y-8">
+            <div className="space-y-8 reveal-left delay-1">
               <div>
                 <span className="text-xs uppercase tracking-widest text-[#9333ea] font-bold">Get In Touch</span>
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 mt-2">Let's Build Something Great Together</h2>
@@ -1538,7 +1577,7 @@ export default function HomePage() {
             </div>
 
             {/* Contact Form */}
-            <div className="bg-white p-5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50">
+            <div className="bg-white p-5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50 reveal-right delay-2">
               <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-5 sm:mb-6">Send a Message</h3>
 
               {submitStatus.message && (

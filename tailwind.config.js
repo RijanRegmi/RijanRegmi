@@ -17,8 +17,22 @@ module.exports = {
         'nav-click-zoom': 'navClickZoomInOut 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both',
         'fade-in': 'fadeIn 0.3s ease forwards',
         'float': 'float 5s ease-in-out infinite',
+        'hero-slide-left': 'heroSlideInLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both',
+        'hero-slide-left-1': 'heroSlideInLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both',
+        'hero-slide-left-2': 'heroSlideInLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both',
+        'hero-slide-left-3': 'heroSlideInLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both',
+        'hero-slide-left-4': 'heroSlideInLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both',
+        'hero-slide-right': 'heroSlideInRight 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both',
       },
       keyframes: {
+        heroSlideInLeft: {
+          '0%': { opacity: '0', transform: 'translateX(-100px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        heroSlideInRight: {
+          '0%': { opacity: '0', transform: 'translateX(100px) scale(0.94)' },
+          '100%': { opacity: '1', transform: 'translateX(0) scale(1)' },
+        },
         navbarGlassReveal: {
           '0%': { clipPath: 'inset(0 48% round 9999px)', opacity: '0', transform: 'translateY(-6px) scale(0.98)' },
           '25%': { opacity: '1' },

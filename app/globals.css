@@ -13,14 +13,13 @@
 
 * {
   box-sizing: border-box;
+}
+
+html {
   scroll-behavior: smooth;
 }
 
-html,
 body {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: clip;
   overflow-x: hidden;
   background-color: #F8FAFC;
   color: #0f172a;
@@ -266,25 +265,107 @@ button:not(:disabled):active {
   animation: navClickZoomInOut 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-/* ─── Universal Staggered Scroll Reveal Animations (Slow & Smooth) ─── */
-.reveal-init {
-  opacity: 0;
-  transform: translateY(36px);
-  transition: opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1), transform 1.15s cubic-bezier(0.16, 1, 0.3, 1);
+/* ─── Hero First-Load / Reload Entrance Animations ─── */
+@keyframes heroSlideInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes heroSlideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.animate-hero-slide-left {
+  animation: heroSlideInLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both !important;
+  will-change: transform, opacity;
+}
+
+.animate-hero-slide-left-1 {
+  animation: heroSlideInLeft 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.10s both !important;
+  will-change: transform, opacity;
+}
+
+.animate-hero-slide-left-2 {
+  animation: heroSlideInLeft 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both !important;
+  will-change: transform, opacity;
+}
+
+.animate-hero-slide-left-3 {
+  animation: heroSlideInLeft 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.40s both !important;
+  will-change: transform, opacity;
+}
+
+.animate-hero-slide-left-4 {
+  animation: heroSlideInLeft 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both !important;
+  will-change: transform, opacity;
+}
+
+.animate-hero-slide-right {
+  animation: heroSlideInRight 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both !important;
+  will-change: transform, opacity;
+}
+
+/* ─── Universal Staggered Scroll Reveal Animations (Fail-safe RopeWallet pattern) ─── */
+/* Default state is visible so content can NEVER be blank */
+.reveal-init,
+.reveal-up,
+.reveal-left,
+.reveal-right,
+.reveal-scale {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
-.reveal-visible {
-  opacity: 1 !important;
-  transform: translateY(0) scale(1) !important;
+/* Waiting to animate on scroll (applied dynamically by observer only to off-screen elements) */
+.js-reveal-pending {
+  opacity: 0 !important;
+  transform: translateY(28px) !important;
 }
 
-/* Stagger delay utilities */
-.stagger-1 { transition-delay: 0.12s; }
-.stagger-2 { transition-delay: 0.28s; }
-.stagger-3 { transition-delay: 0.44s; }
-.stagger-4 { transition-delay: 0.60s; }
-.stagger-5 { transition-delay: 0.76s; }
-.stagger-6 { transition-delay: 0.92s; }
-.stagger-7 { transition-delay: 1.08s; }
-.stagger-8 { transition-delay: 1.24s; }
+.js-reveal-pending.reveal-left,
+.js-reveal-pending.slide-left {
+  transform: translateX(-40px) !important;
+}
+
+.js-reveal-pending.reveal-right,
+.js-reveal-pending.slide-right {
+  transform: translateX(40px) !important;
+}
+
+.js-reveal-pending.reveal-scale,
+.js-reveal-pending.scale-up {
+  transform: scale(0.94) translateY(18px) !important;
+}
+
+/* Revealed state: smooth animation into final place */
+.reveal-visible {
+  opacity: 1 !important;
+  transform: translateY(0) translateX(0) scale(1) !important;
+}
+
+/* Stagger delay utilities (Spaced for smooth cascade) */
+.stagger-1, .delay-1 { transition-delay: 0.06s; }
+.stagger-2, .delay-2 { transition-delay: 0.14s; }
+.stagger-3, .delay-3 { transition-delay: 0.22s; }
+.stagger-4, .delay-4 { transition-delay: 0.30s; }
+.stagger-5, .delay-5 { transition-delay: 0.38s; }
+.stagger-6, .delay-6 { transition-delay: 0.46s; }
+.stagger-7, .delay-7 { transition-delay: 0.54s; }
+.stagger-8, .delay-8 { transition-delay: 0.62s; }
+
+/* end of animations */

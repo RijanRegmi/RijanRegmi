@@ -1,6 +1,5 @@
-'use client';
-
 import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { 
@@ -26,6 +25,68 @@ interface BlogPageProps {
   };
 }
 
+const SITE_URL = 'https://www.rijanregmi.com.np';
+
+export async function generateStaticParams() {
+  return BLOG_POSTS.map((post) => ({
+    name: post.slug,
+  }));
+}
+
+export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
+  const post = BLOG_POSTS.find((p) => p.slug === params.name);
+  if (!post) {
+    return {
+      title: 'Article Not Found | Rijan Regmi',
+      description: 'The requested engineering case study could not be found.',
+    };
+  }
+
+  const postUrl = `${SITE_URL}/blog/${post.slug}`;
+  const imageUrl = post.image.startsWith('http') ? post.image : `${SITE_URL}${post.image}`;
+
+  return {
+    title: `${post.title}`,
+    description: post.excerpt,
+    keywords: [
+      ...post.tags,
+      post.category,
+      'Rijan Regmi',
+      'Software Architecture',
+      'System Design',
+      'Case Study',
+      'Full Stack Development',
+    ],
+    alternates: {
+      canonical: postUrl,
+    },
+    openGraph: {
+      type: 'article',
+      locale: 'en_US',
+      url: postUrl,
+      title: `${post.title} | Rijan Regmi`,
+      description: post.excerpt,
+      siteName: 'Rijan Regmi Portfolio',
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${post.title} | Rijan Regmi`,
+      description: post.excerpt,
+      site: '@rijanregmi_',
+      creator: '@rijanregmi_',
+      images: [imageUrl],
+    },
+  };
+}
+
 export default function BlogDetailPage({ params }: BlogPageProps) {
   const post = BLOG_POSTS.find((p) => p.slug === params.name);
 
@@ -34,14 +95,45 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
   }
 
   const otherPosts = BLOG_POSTS.filter((p) => p.slug !== post.slug);
+  const articleUrl = `${SITE_URL}/blog/${post.slug}`;
+  const imageUrl = post.image.startsWith('http') ? post.image : `${SITE_URL}${post.image}`;
+
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: post.title,
+    description: post.excerpt,
+    image: imageUrl,
+    url: articleUrl,
+    datePublished: '2026-08-01',
+    author: {
+      '@type': 'Person',
+      name: 'Rijan Regmi',
+      url: SITE_URL,
+    },
+    publisher: {
+      '@type': 'Person',
+      name: 'Rijan Regmi',
+      url: SITE_URL,
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': articleUrl,
+    },
+    keywords: post.tags.join(', '),
+  };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-[#a855f7] selection:text-white">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-[#a855f7] selection:text-white w-full max-w-full overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       {/* Floating Navbar (Self-contained, dark glass pill design) */}
       <FloatingNavbar />
 
       {/* Main Content Area */}
-      <main className="flex-1 pt-28 sm:pt-36 pb-20 px-4 sm:px-6 lg:px-8 max-w-[1200px] w-full mx-auto relative z-10">
+      <main className="flex-1 pt-28 sm:pt-36 pb-20 px-4 sm:px-6 lg:px-8 max-w-[1200px] w-full mx-auto relative z-10 overflow-x-hidden">
         
         {/* Back Link */}
         <div className="mb-8">
