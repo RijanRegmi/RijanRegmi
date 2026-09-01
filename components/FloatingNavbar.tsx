@@ -31,10 +31,11 @@ const DEFAULT_THEME = 'dark';
 const DEFAULT_NAV_ITEMS: NavItem[] = [
   { label: 'About', href: '#about' },
   { label: 'Skills', href: '#skills' },
+  { label: 'Certificates', href: '#certificates' },
   { label: 'Services', href: '#services' },
   { label: 'Portfolio', href: '#portfolio' },
   { label: 'Blog', href: '#blog' },
-  { label: 'Resume', href: '/assets/Resume-Rijan Regmi.pdf', isExternal: true, badge: 'PDF' },
+  // { label: 'Resume', href: '/assets/Resume-Rijan Regmi.pdf', isExternal: true, badge: 'PDF' },
 ];
 
 export interface FloatingNavbarProps {
@@ -157,6 +158,7 @@ export default function FloatingNavbar({
       const blogEl = document.getElementById('blog');
       const portfolioEl = document.getElementById('portfolio');
       const servicesEl = document.getElementById('services');
+      const certificatesEl = document.getElementById('certificates');
       const skillsEl = document.getElementById('skills');
       const aboutEl = document.getElementById('about');
 
@@ -170,6 +172,8 @@ export default function FloatingNavbar({
         setActiveHref('#portfolio');
       } else if (servicesEl && scrollPos >= servicesEl.offsetTop - 120) {
         setActiveHref('#services');
+      } else if (certificatesEl && scrollPos >= certificatesEl.offsetTop - 120) {
+        setActiveHref('#certificates');
       } else if (skillsEl && scrollPos >= skillsEl.offsetTop - 120) {
         setActiveHref('#skills');
       } else if (aboutEl && scrollPos >= aboutEl.offsetTop - 120) {
@@ -270,17 +274,15 @@ export default function FloatingNavbar({
       {/* Centered spacious container */}
       <div
         ref={navContainerRef}
-        className={`relative mx-auto flex flex-col items-center pointer-events-auto transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          isScrolled ? 'max-w-[1240px] w-full' : 'max-w-[1380px] w-full'
-        }`}
+        className={`relative mx-auto flex flex-col items-center pointer-events-auto transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isScrolled ? 'max-w-[1240px] w-full' : 'max-w-[1380px] w-full'
+          }`}
       >
         {/* Transparent Frosted Glass Floating Pill Container */}
-        <div className={`relative rounded-full px-3 sm:px-5 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-3 lg:gap-4 ${
-          isDark 
-            ? 'bg-[#0e0e14]/85 border border-white/10 shadow-2xl shadow-black/60' 
+        <div className={`relative rounded-full px-3 sm:px-5 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-3 lg:gap-4 ${isDark
+            ? 'bg-[#0e0e14]/85 border border-white/10 shadow-2xl shadow-black/60'
             : 'bg-white/70 backdrop-blur-2xl sm:backdrop-blur-3xl border border-white/75 shadow-lg shadow-slate-900/5'
-        } backdrop-blur-2xl sm:backdrop-blur-3xl w-full overflow-hidden animate-navbar-glass-reveal`}>
-          
+          } backdrop-blur-2xl sm:backdrop-blur-3xl w-full overflow-hidden animate-navbar-glass-reveal`}>
+
           {/* Inner Content */}
           <div className="w-full flex items-center justify-between gap-2 sm:gap-3 lg:gap-4">
             {/* 1. Left: Animated Splitting Logo with Smooth Scroll to Very Top */}
@@ -292,9 +294,8 @@ export default function FloatingNavbar({
             >
               {/* Animated Circular Logo Icon with higher z-index so text slides underneath it */}
               <div
-                className={`relative z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/40 flex items-center justify-center shrink-0 transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110 group-hover:rotate-1 ${
-                  isScrolled ? 'scale-95' : 'scale-105'
-                }`}
+                className={`relative z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black/40 flex items-center justify-center shrink-0 transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110 group-hover:rotate-1 ${isScrolled ? 'scale-95' : 'scale-105'
+                  }`}
               >
                 <Image
                   src={logoImg}
@@ -309,11 +310,10 @@ export default function FloatingNavbar({
 
               {/* Splitting Brand Text — restored to original working classes (git a795f53) */}
               <div
-                className={`relative z-10 flex flex-col justify-center overflow-hidden py-1 transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] origin-left will-change-[max-width,transform,opacity] ${
-                  isScrolled
+                className={`relative z-10 flex flex-col justify-center overflow-hidden py-1 transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] origin-left will-change-[max-width,transform,opacity] ${isScrolled
                     ? 'max-w-0 opacity-0 -translate-x-12 scale-90 ml-0 pointer-events-none'
                     : 'max-w-[280px] opacity-100 translate-x-0 scale-100 ml-2.5 sm:ml-3.5'
-                }`}
+                  }`}
               >
                 <div className="flex items-baseline font-black tracking-tight text-xl sm:text-2xl leading-none whitespace-nowrap">
                   <span className={brandFirstClass}>{brandNameFirst}</span>
@@ -408,11 +408,10 @@ export default function FloatingNavbar({
                   e.stopPropagation();
                   setMobileMenuOpen(!mobileMenuOpen);
                 }}
-                className={`lg:hidden p-2.5 rounded-full transition-all duration-300 cursor-pointer shrink-0 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none ${
-                  mobileMenuOpen
+                className={`lg:hidden p-2.5 rounded-full transition-all duration-300 cursor-pointer shrink-0 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none ${mobileMenuOpen
                     ? 'bg-gradient-to-r from-[#c026d3] to-[#7c3aed] text-white rotate-90 scale-105 shadow-md shadow-purple-900/40'
                     : isDark ? 'text-gray-300 hover:text-white hover:bg-white/10' : 'text-slate-800 hover:bg-slate-100/90'
-                }`}
+                  }`}
                 aria-label="Toggle Navigation Menu"
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -423,37 +422,33 @@ export default function FloatingNavbar({
 
         {/* 4. Responsive Mobile Glassmorphic Drawer (Slow top-to-bottom expand with staggered item loading) */}
         <div
-          className={`lg:hidden absolute top-full left-0 right-0 w-full grid transition-[grid-template-rows,opacity] duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] z-50 ${
-            mobileMenuOpen
+          className={`lg:hidden absolute top-full left-0 right-0 w-full grid transition-[grid-template-rows,opacity] duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] z-50 ${mobileMenuOpen
               ? 'grid-rows-[1fr] opacity-100 pointer-events-auto visible'
               : 'grid-rows-[0fr] opacity-0 pointer-events-none invisible'
-          }`}
+            }`}
         >
           <div className="overflow-hidden w-full">
-            <div className={`mt-2.5 ${
-              isDark 
-                ? 'bg-[#0e0e14]/95 border border-white/10 text-gray-200 shadow-2xl shadow-black/80' 
+            <div className={`mt-2.5 ${isDark
+                ? 'bg-[#0e0e14]/95 border border-white/10 text-gray-200 shadow-2xl shadow-black/80'
                 : 'bg-white/95 border border-slate-200/90 text-slate-800 shadow-2xl shadow-slate-900/20'
-            } backdrop-blur-3xl rounded-3xl p-5 space-y-1`}>
+              } backdrop-blur-3xl rounded-3xl p-5 space-y-1`}>
               {navItems.map((item, index) => (
                 <div
                   key={item.label}
                   style={{
                     transitionDelay: mobileMenuOpen ? `${120 + index * 80}ms` : '0ms',
                   }}
-                  className={`transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                    mobileMenuOpen
+                  className={`transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${mobileMenuOpen
                       ? 'opacity-100 translate-y-0'
                       : 'opacity-0 -translate-y-3 pointer-events-none'
-                  }`}
+                    }`}
                 >
                   {item.href.startsWith('/') && !item.href.includes('#') ? (
                     <Link
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center justify-between px-4 py-3 rounded-2xl text-[15px] font-medium ${
-                        isDark ? 'text-gray-200 hover:text-white hover:bg-purple-600/20' : 'text-slate-800 hover:text-slate-950 hover:bg-purple-50'
-                      } transition-all whitespace-nowrap`}
+                      className={`flex items-center justify-between px-4 py-3 rounded-2xl text-[15px] font-medium ${isDark ? 'text-gray-200 hover:text-white hover:bg-purple-600/20' : 'text-slate-800 hover:text-slate-950 hover:bg-purple-50'
+                        } transition-all whitespace-nowrap`}
                     >
                       <span>{item.label}</span>
                       {item.badge && (
@@ -466,9 +461,8 @@ export default function FloatingNavbar({
                     <a
                       href={item.href}
                       onClick={(e) => handleNavClick(e, item.href)}
-                      className={`flex items-center justify-between px-4 py-3 rounded-2xl text-[15px] font-medium ${
-                        isDark ? 'text-gray-200 hover:text-white hover:bg-purple-600/20' : 'text-slate-800 hover:text-slate-950 hover:bg-purple-50'
-                      } transition-all cursor-pointer whitespace-nowrap`}
+                      className={`flex items-center justify-between px-4 py-3 rounded-2xl text-[15px] font-medium ${isDark ? 'text-gray-200 hover:text-white hover:bg-purple-600/20' : 'text-slate-800 hover:text-slate-950 hover:bg-purple-50'
+                        } transition-all cursor-pointer whitespace-nowrap`}
                     >
                       <span>{item.label}</span>
                       {item.badge && (
@@ -485,13 +479,11 @@ export default function FloatingNavbar({
                 style={{
                   transitionDelay: mobileMenuOpen ? `${120 + navItems.length * 80}ms` : '0ms',
                 }}
-                className={`pt-3 mt-2 border-t ${
-                  isDark ? 'border-white/10' : 'border-slate-200/70'
-                } transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                  mobileMenuOpen
+                className={`pt-3 mt-2 border-t ${isDark ? 'border-white/10' : 'border-slate-200/70'
+                  } transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${mobileMenuOpen
                     ? 'opacity-100 translate-y-0'
                     : 'opacity-0 -translate-y-3 pointer-events-none'
-                }`}
+                  }`}
               >
                 <a
                   href={ctaHref}

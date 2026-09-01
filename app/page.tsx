@@ -3,17 +3,17 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { 
-  Github, 
-  Linkedin, 
-  Instagram, 
-  Facebook, 
-  Mail, 
+import {
+  Github,
+  Linkedin,
+  Instagram,
+  Facebook,
+  Mail,
   Phone,
-  MapPin, 
-  Code2, 
-  Send, 
-  CheckCircle2, 
+  MapPin,
+  Code2,
+  Send,
+  CheckCircle2,
   AlertCircle,
   Printer,
   Layout,
@@ -33,6 +33,13 @@ import {
   Server,
   Smartphone,
   Database,
+  Award,
+  ChevronLeft,
+  ChevronRight,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  Maximize2,
   LucideIcon
 } from 'lucide-react';
 import { contactApi } from '@/lib/api/contact.api';
@@ -166,9 +173,177 @@ const SKILLS: SkillItem[] = [
   { name: 'Python', level: 'Advanced', iconSrc: '/assets/skills/python.svg' },
   { name: 'SQL, noSQL', level: 'Advanced', iconSrc: '/assets/skills/postgresql.svg' },
   { name: 'Java', level: 'Proficient', iconSrc: '/assets/skills/java.svg', whiteBg: true },
-  { name: 'PHP', level: 'Advanced', iconSrc: '/assets/skills/php.svg' },
+  { name: 'PHP', level: 'Basic', iconSrc: '/assets/skills/php.svg' },
   { name: 'MongoDB', level: 'Proficient', iconSrc: '/assets/skills/mongodb.svg' },
   { name: 'Tailwind CSS', level: 'Expert', iconSrc: '/assets/skills/tailwindcss.svg' },
+];
+
+// Certificates & Accreditations Data
+export interface CertificateSlide {
+  label: string;
+  title: string;
+  image: string;
+  serialNo?: string;
+}
+
+export interface CertificateItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  issuer: string;
+  endorsement?: string;
+  issueDate: string;
+  enrolledDate?: string;
+  completedDate?: string;
+  credentialId: string;
+  verificationUrl: string;
+  orientation: 'portrait' | 'landscape';
+  slides: CertificateSlide[];
+  summary: string;
+  director: string;
+  tags: string[];
+  highlights: { label: string; value: string }[];
+  actionLabel?: string;
+}
+
+const CERTIFICATES: CertificateItem[] = [
+  {
+    id: 'footylytics-graduate',
+    title: 'Footylytics Graduate',
+    subtitle: 'Footylytics Football Intelligence Programme',
+    issuer: 'Footylytics Academy',
+    endorsement: 'Institute of Analytics Endorsed Course',
+    issueDate: 'July 17, 2026',
+    enrolledDate: 'June 3, 2026',
+    completedDate: 'July 16, 2026',
+    credentialId: 'cmrmzg85k000u2b6i2whfzzso',
+    verificationUrl: 'https://footylytics.academy/certificate/cmrmzg85k000u2b6i2whfzzso?theme=solarized',
+    orientation: 'portrait',
+    slides: [
+      {
+        label: 'Graduate Certificate',
+        title: 'Footylytics Football Intelligence Programme',
+        image: '/assets/Certificate/footylytics.academy.png',
+        serialNo: 'cmrmzg85k000u2b6i2whfzzso',
+      },
+    ],
+    summary: 'Successfully completed all 17 comprehensive courses (56 days) of the Footylytics Football Intelligence Programme, mastering data science on real match data, mathematical models, tactical analysis, tools & dashboard engineering.',
+    director: 'Manoj Shrestha (Programme Director)',
+    tags: [
+      'Football Intelligence',
+      'Data Science',
+      'Python & Code on Real Data',
+      'Mathematics & Metrics',
+      'Tools & Dashboards',
+      'Tactical Analysis',
+    ],
+    highlights: [
+      { label: 'Curriculum', value: '17 Courses (56 Days)' },
+      { label: 'Issued Date', value: 'July 17, 2026' },
+      { label: 'Endorsement', value: 'Institute of Analytics' },
+      { label: 'Verification', value: 'Live & Authenticated' },
+    ],
+    actionLabel: 'View Official Certificate',
+  },
+  {
+    id: 'afcas-scouting',
+    title: 'A.F.C.A.S. Technical Scouting & Talent ID',
+    subtitle: 'Football Fundamentals & Technical Scouting (Levels 1 – 3)',
+    issuer: 'The Association of Football Coaches & Scouts (A.F.C.A.S.)',
+    endorsement: 'S4 Scouting Professional Football Accredited',
+    issueDate: 'July 17, 2026',
+    credentialId: 'CERT_10103 / CERT_20068 / CERT_30039',
+    verificationUrl: 'https://afcas.teachable.com/',
+    orientation: 'landscape',
+    slides: [
+      {
+        label: 'Level 1',
+        title: 'Level 1: Football Fundamentals & Talent ID',
+        image: '/assets/Certificate/level1-afcas.png',
+        serialNo: 'CERT_10103',
+      },
+      {
+        label: 'Level 2',
+        title: 'Level 2: Technical Scouting Course',
+        image: '/assets/Certificate/level2-afcas.png',
+        serialNo: 'CERT_20068',
+      },
+      {
+        label: 'Level 3',
+        title: 'Level 3: Technical Scouting & Advanced Talent ID',
+        image: '/assets/Certificate/level3-afcas.png',
+        serialNo: 'CERT_30039',
+      },
+    ],
+    summary: 'Comprehensive 3-tier professional technical scouting and talent identification certification series from A.F.C.A.S. and S4 Scouting. Covers foundational to advanced player evaluation, tactical match scouting, opposition reporting, and recruitment metrics.',
+    director: 'Ged Searson (Managing Director)',
+    tags: [
+      'Talent Identification',
+      'Technical Scouting',
+      'Player Assessment',
+      'Tactical Analysis',
+      'Match Reporting',
+      'Opposition Scouting',
+      'Recruitment Strategy',
+    ],
+    highlights: [
+      { label: 'Accreditation', value: 'Levels 1, 2 & 3 Complete' },
+      { label: 'Issued Date', value: 'July 17, 2026' },
+      { label: 'Governing Body', value: 'A.F.C.A.S. & S4 Scouting' },
+      { label: 'Verification', value: 'Official Teachable Portal' },
+    ],
+    actionLabel: 'Visit Official Portal',
+  },
+  {
+    id: 'afcas-positional-scouting',
+    title: 'A.F.C.A.S. Positional Scouting & Recruitment',
+    subtitle: 'Professional Football Workshop Series (Modules 1 – 3)',
+    issuer: 'The Association of Football Coaches & Scouts (A.F.C.A.S.)',
+    endorsement: 'CIMSPA Education Partner & S4 Scouting Accredited',
+    issueDate: 'January – February 2026',
+    credentialId: 'AFCAS Workshop Modules 1, 2 & 3',
+    verificationUrl: 'https://afcas.teachable.com/',
+    orientation: 'landscape',
+    slides: [
+      {
+        label: 'Module 1',
+        title: 'Module 1: Positional Scouting & Recruitment Workshop',
+        image: '/assets/Certificate/module1-afcas.png',
+        serialNo: 'Issued: 1st of January 2026',
+      },
+      {
+        label: 'Module 2',
+        title: 'Module 2: Positional Scouting & Recruitment Workshop',
+        image: '/assets/Certificate/module2-afcas.png',
+        serialNo: 'Issued: 16th of January 2026',
+      },
+      {
+        label: 'Module 3',
+        title: 'Module 3: Positional Scouting & Recruitment Workshop',
+        image: '/assets/Certificate/module3-afcas.png',
+        serialNo: 'Issued: 19th of February 2026',
+      },
+    ],
+    summary: 'Interactive professional football webinar workshop series delivered directly by Managing Director Ged Searson. Focuses on in-depth positional role profiling, position-specific key performance indicators, live match recruitment analysis, and modern scouting workflows endorsed by CIMSPA.',
+    director: 'Ged Searson (Managing Director)',
+    tags: [
+      'Positional Scouting',
+      'Player Recruitment',
+      'Role Profiling',
+      'Position-Specific KPIs',
+      'Tactical Analysis',
+      'Webinar Masterclass',
+      'CIMSPA Endorsed',
+      'S4 Scouting',
+    ],
+    highlights: [
+      { label: 'Curriculum', value: 'Modules 1, 2 & 3 Complete' },
+      { label: 'Instructor', value: 'Ged Searson (Director)' },
+      { label: 'Accreditation', value: 'CIMSPA Education Partner' },
+      { label: 'Format', value: 'Interactive Live Masterclasses' },
+    ],
+    actionLabel: 'Visit Official Portal',
+  },
 ];
 
 // Official Projects Data with real screenshots and brand logos
@@ -277,6 +452,106 @@ export default function HomePage() {
 
   // State for active Case Study modal
   const [activeCaseStudy, setActiveCaseStudy] = useState<BlogPost | null>(null);
+
+  // State for active certificate slide index per certificate card
+  const [certSlideIndices, setCertSlideIndices] = useState<{ [key: string]: number }>({});
+
+  // State for active certificate modal (fullscreen zoom lightbox)
+  const [modalCert, setModalCert] = useState<{
+    certId: string;
+    slideIndex: number;
+  } | null>(null);
+  const [zoomScale, setZoomScale] = useState<number>(1);
+
+  const openCertModal = (certId: string, slideIndex: number = 0) => {
+    setModalCert({ certId, slideIndex });
+    setZoomScale(1);
+  };
+
+  const closeCertModal = () => {
+    setModalCert(null);
+    setZoomScale(1);
+  };
+
+  const handleZoomIn = () => {
+    setZoomScale((prev) => Math.min(Number((prev + 0.25).toFixed(2)), 3));
+  };
+
+  const handleZoomOut = () => {
+    setZoomScale((prev) => Math.max(Number((prev - 0.25).toFixed(2)), 0.75));
+  };
+
+  const handleResetZoom = () => {
+    setZoomScale(1);
+  };
+
+  const toggleZoom = () => {
+    setZoomScale((prev) => (prev > 1.2 ? 1 : 1.75));
+  };
+
+  const handlePrevCertSlide = (certId: string, totalSlides: number) => {
+    setCertSlideIndices((prev) => {
+      const current = prev[certId] || 0;
+      const next = (current - 1 + totalSlides) % totalSlides;
+      return { ...prev, [certId]: next };
+    });
+  };
+
+  const handleNextCertSlide = (certId: string, totalSlides: number) => {
+    setCertSlideIndices((prev) => {
+      const current = prev[certId] || 0;
+      const next = (current + 1) % totalSlides;
+      return { ...prev, [certId]: next };
+    });
+  };
+
+  const handleSelectCertSlide = (certId: string, index: number) => {
+    setCertSlideIndices((prev) => ({ ...prev, [certId]: index }));
+  };
+
+  // Fullscreen certificate modal keyboard navigation & body scroll lock
+  useEffect(() => {
+    if (!modalCert) {
+      document.body.style.overflow = '';
+      return;
+    }
+
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setModalCert(null);
+        setZoomScale(1);
+      } else if (e.key === 'ArrowLeft') {
+        const activeCert = CERTIFICATES.find((c) => c.id === modalCert.certId);
+        if (activeCert && activeCert.slides.length > 1) {
+          setModalCert((prev) => {
+            if (!prev) return null;
+            const nextIdx =
+              (prev.slideIndex - 1 + activeCert.slides.length) %
+              activeCert.slides.length;
+            return { ...prev, slideIndex: nextIdx };
+          });
+        }
+      } else if (e.key === 'ArrowRight') {
+        const activeCert = CERTIFICATES.find((c) => c.id === modalCert.certId);
+        if (activeCert && activeCert.slides.length > 1) {
+          setModalCert((prev) => {
+            if (!prev) return null;
+            const nextIdx =
+              (prev.slideIndex + 1) % activeCert.slides.length;
+            return { ...prev, slideIndex: nextIdx };
+          });
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [modalCert]);
 
   // Universal Staggered Scroll-Reveal Animations
   useEffect(() => {
@@ -458,15 +733,15 @@ export default function HomePage() {
           {/* Right Column: Circular Portrait (Centered) */}
           <div className="lg:col-span-5 flex justify-center items-center pt-4 lg:pt-0">
             <div className="relative w-[260px] h-[260px] sm:w-[360px] sm:h-[360px] lg:w-[460px] lg:h-[460px] rounded-full bg-gradient-to-b from-purple-100/70 to-slate-100 border border-purple-200/80 shadow-2xl flex items-center justify-center overflow-hidden group">
-              
+
               {/* Backlight circular glow in RJN purple */}
               <div className="absolute inset-0 rounded-full bg-purple-500/15 blur-3xl pointer-events-none group-hover:bg-purple-500/25 transition-all duration-700" />
-              
+
               {/* Header Profile Photo */}
               <img
-                src="/assets/imgs/header.png"
+                src="/assets/imgs/header.jpeg"
                 alt="Rijan Regmi"
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 relative z-10"
+                className="w-full h-full object-cover object-[center_25%] group-hover:scale-105 transition-transform duration-700 relative z-10"
               />
             </div>
           </div>
@@ -478,7 +753,7 @@ export default function HomePage() {
       <section id="about" className="py-20 sm:py-24 bg-white border-t border-slate-200/80 relative">
         <div className="max-w-md md:max-w-7xl mx-auto px-8 sm:px-12 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-14 sm:gap-16 md:gap-12 items-start">
-            
+
             {/* Column 1: Who am I ? */}
             <div className="flex flex-col justify-between h-full md:border-r md:border-slate-200 md:pr-8 space-y-6">
               <div>
@@ -622,13 +897,13 @@ export default function HomePage() {
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
             {SKILLS.map((skill, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className="relative overflow-hidden p-6 sm:p-7 rounded-2xl text-center flex flex-col items-center justify-between min-h-[185px] bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-purple-500/50 shadow-md hover:shadow-xl hover:shadow-purple-900/10 transition-all duration-300 hover:-translate-y-1.5 group cursor-pointer"
               >
                 {/* Ambient Subtle Radial Glow */}
                 <div className="absolute top-3 w-16 h-16 bg-purple-400/10 rounded-full blur-xl pointer-events-none group-hover:bg-purple-400/25 transition-all duration-300" />
-                
+
                 {/* Circular Logo Badge Container */}
                 <div className="relative z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-slate-100/90 border border-slate-200/90 flex items-center justify-center p-2.5 sm:p-3 mb-3.5 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] transition-all duration-300">
                   <img
@@ -651,10 +926,241 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Certificates & Accreditations Section */}
+      <section id="certificates" className="py-24 bg-white border-t border-slate-200/80 relative">
+        {/* Soft Ambient Radial Backlights */}
+        <div className="absolute top-10 right-10 w-96 h-96 bg-purple-200/30 rounded-full blur-[100px] pointer-events-none -z-0" />
+        <div className="absolute bottom-10 left-10 w-96 h-96 bg-fuchsia-100/30 rounded-full blur-[100px] pointer-events-none -z-0" />
+
+        <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Section Header */}
+          <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+            <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-[#9333ea] font-bold">
+              <Award size={14} className="text-[#9333ea]" />
+              Verified Credentials
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 mt-2 tracking-tight">
+              Certificates & Accreditations
+            </h2>
+            <p className="text-slate-600 text-sm sm:text-base mt-3">
+              Industry-recognized certifications and professional credentials validating technical domain expertise and practical execution.
+            </p>
+          </div>
+
+          {/* Certificate Showcase Cards */}
+          <div className="space-y-12">
+            {CERTIFICATES.map((cert) => {
+              const currentSlideIndex = certSlideIndices[cert.id] || 0;
+              const currentSlide = cert.slides[currentSlideIndex] || cert.slides[0];
+              const hasMultipleSlides = cert.slides.length > 1;
+              const isPortrait = cert.orientation === 'portrait';
+
+              return (
+                <div
+                  key={cert.id}
+                  className="rounded-3xl bg-slate-50/80 border border-slate-200/90 hover:border-purple-500/40 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-purple-900/10 transition-all duration-300 overflow-hidden"
+                >
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 p-6 sm:p-8 lg:p-10 items-center">
+                    {/* Left Column: Certificate Visual Frame with Interactive Zoom & Slider */}
+                    <div className={`${isPortrait ? 'lg:col-span-5' : 'lg:col-span-6'} flex flex-col items-center justify-center`}>
+                      {/* Certificate Image Container */}
+                      <div className={`relative w-full ${isPortrait ? 'max-w-[400px] sm:max-w-[430px]' : 'max-w-[540px] sm:max-w-[580px]'} rounded-2xl overflow-hidden bg-white/80 border border-slate-200 shadow-lg hover:shadow-2xl hover:shadow-purple-900/20 transition-all duration-500`}>
+                        {/* Clickable Image -> Opens Fullscreen Zoom Modal */}
+                        <div
+                          onClick={() => openCertModal(cert.id, currentSlideIndex)}
+                          className={`block relative ${isPortrait ? 'aspect-[3/4]' : 'aspect-[4/3] sm:aspect-[16/11]'} w-full overflow-hidden bg-slate-100 cursor-pointer select-none`}
+                          title={`Click to view ${currentSlide.title || cert.title} in Fullscreen`}
+                        >
+                          {/* Preloaded smooth cross-fading slide stack */}
+                          {cert.slides.map((slide, idx) => (
+                            <img
+                              key={slide.image}
+                              src={slide.image}
+                              alt={slide.title || `${cert.title} certificate`}
+                              className={`absolute inset-0 w-full h-full object-contain p-2 sm:p-3 transition-opacity duration-300 ease-in-out ${
+                                idx === currentSlideIndex
+                                  ? 'opacity-100 z-10'
+                                  : 'opacity-0 z-0 pointer-events-none'
+                              }`}
+                              loading="eager"
+                              decoding="async"
+                              draggable={false}
+                            />
+                          ))}
+
+                          {/* Top Right Verified Floating Badge */}
+                          <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-md border border-purple-200/80 shadow-md rounded-full px-2.5 py-1 flex items-center gap-1.5 pointer-events-none z-20">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                            <span className="text-[10px] font-bold text-slate-800 uppercase tracking-wider">
+                              {hasMultipleSlides ? currentSlide.label : 'Official'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Bottom Level Switcher & Arrow Navigation Bar */}
+                      {hasMultipleSlides && (
+                        <div className="flex items-center justify-between gap-1.5 p-1.5 bg-white border border-slate-200 rounded-2xl mt-3.5 shadow-sm w-full max-w-[540px]">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handlePrevCertSlide(cert.id, cert.slides.length);
+                            }}
+                            className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-[#9333ea] text-slate-700 hover:text-white transition-all flex items-center justify-center cursor-pointer shrink-0"
+                            title="Previous Level"
+                            aria-label="Previous Level"
+                          >
+                            <ChevronLeft size={20} />
+                          </button>
+
+                          <div className="flex items-center justify-center gap-1.5 flex-1">
+                            {cert.slides.map((slide, idx) => (
+                              <button
+                                key={idx}
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleSelectCertSlide(cert.id, idx);
+                                }}
+                                className={`flex-1 py-1.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer text-center ${
+                                  currentSlideIndex === idx
+                                    ? 'bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] text-white shadow-sm'
+                                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                                }`}
+                              >
+                                {slide.label}
+                              </button>
+                            ))}
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleNextCertSlide(cert.id, cert.slides.length);
+                            }}
+                            className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-[#9333ea] text-slate-700 hover:text-white transition-all flex items-center justify-center cursor-pointer shrink-0"
+                            title="Next Level"
+                            aria-label="Next Level"
+                          >
+                            <ChevronRight size={20} />
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Active Level Sub-label */}
+                      {hasMultipleSlides && (
+                        <p className="text-xs sm:text-sm text-slate-600 font-medium mt-2 text-center">
+                          Showing: <span className="font-bold text-slate-900">{currentSlide.title}</span>
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Right Column: Certificate Details */}
+                    <div className={`${isPortrait ? 'lg:col-span-7' : 'lg:col-span-6'} flex flex-col items-center text-center lg:items-start lg:text-left justify-between space-y-6`}>
+                      <div className="space-y-4 w-full">
+                        {/* Top Badges */}
+                        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-3">
+                          {cert.endorsement && (
+                            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-purple-100 text-purple-800 border border-purple-200">
+                              <ShieldCheck size={15} className="text-[#9333ea]" />
+                              {cert.endorsement}
+                            </span>
+                          )}
+                          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            <CheckCircle2 size={14} className="text-emerald-600" />
+                            {hasMultipleSlides ? `${cert.slides.length} Certified Levels` : 'Verified Graduate'}
+                          </span>
+                        </div>
+
+                        {/* Title & Subtitle */}
+                        <div>
+                          <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-950 tracking-tight leading-tight">
+                            {cert.title}
+                          </h3>
+                          <p className="text-base sm:text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] mt-1.5">
+                            {cert.subtitle}
+                          </p>
+                          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1.5">
+                            Issued by <span className="font-semibold text-slate-800">{cert.issuer}</span> • Director: <span className="font-semibold text-slate-800">{cert.director}</span>
+                          </p>
+                        </div>
+
+                        {/* Summary / Description */}
+                        <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
+                          {cert.summary}
+                        </p>
+
+                        {/* Key Highlights Grid */}
+                        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2 w-full text-center">
+                          {cert.highlights.map((h, i) => (
+                            <div key={i} className="bg-white p-3 sm:p-3.5 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center">
+                              <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+                                {h.label}
+                              </span>
+                              <span className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5 block break-words">
+                                {h.value}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Skills / Domain Tags */}
+                        <div className="pt-2 flex flex-col items-center lg:items-start w-full">
+                          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2 text-center lg:text-left">
+                            Competencies & Tools Covered
+                          </span>
+                          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2">
+                            {cert.tags.map((tag, i) => (
+                              <span
+                                key={i}
+                                className="text-xs font-medium px-3 py-1 rounded-full bg-white text-slate-700 border border-slate-200 shadow-xs"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Bottom Row: CTA Button & Credential ID */}
+                      <div className="pt-4 border-t border-slate-200/90 flex flex-col lg:flex-row items-center justify-between gap-3 sm:gap-4 w-full">
+                        <div className="text-xs text-slate-500 font-mono text-center lg:text-left">
+                          <span className="text-slate-400">
+                            {hasMultipleSlides ? `${currentSlide.label} Serial:` : 'Credential ID:'}{' '}
+                          </span>
+                          <span className="font-bold text-slate-800 select-all">
+                            {currentSlide.serialNo || cert.credentialId}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center justify-center lg:justify-end gap-2 sm:gap-3 flex-wrap w-full sm:w-auto">
+                          <a
+                            href={cert.verificationUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] hover:from-[#a21caf] hover:to-[#6b21a8] text-white font-bold text-sm shadow-lg shadow-purple-900/25 transition-all hover:scale-105 active:scale-95 cursor-pointer w-full sm:w-auto"
+                          >
+                            <Award size={16} />
+                            <span>{cert.actionLabel || 'View Official Certificate'}</span>
+                            <ExternalLink size={15} />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* My Services Section */}
       <section id="services" className="py-24 bg-white border-t border-slate-200/80 relative">
         <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
+
           {/* Section Header */}
           <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
             <span className="text-xs uppercase tracking-widest text-[#9333ea] font-bold">
@@ -739,8 +1245,8 @@ export default function HomePage() {
           {/* 2-Column Wide Projects Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10">
             {PROJECTS.map((project) => (
-              <div 
-                key={project.id} 
+              <div
+                key={project.id}
                 className="rounded-3xl overflow-hidden group flex flex-col bg-white border border-slate-200/90 hover:border-purple-500/40 shadow-xl shadow-slate-200/60 hover:shadow-2xl hover:shadow-purple-900/10 transition-all duration-300 hover:-translate-y-1.5"
               >
                 {/* 1. Website Screenshot with subtle bottom gradient fade & Hover Action Overlay */}
@@ -785,9 +1291,9 @@ export default function HomePage() {
                     {/* Logo on Left in Front of the Name */}
                     <div className="flex items-center gap-3.5 my-2">
                       {project.logo && (
-                        <img 
-                          src={project.logo} 
-                          alt={`${project.title} logo`} 
+                        <img
+                          src={project.logo}
+                          alt={`${project.title} logo`}
                           className="w-10 h-10 sm:w-12 sm:h-12 object-contain shrink-0 bg-transparent drop-shadow-sm"
                         />
                       )}
@@ -812,8 +1318,8 @@ export default function HomePage() {
                     {/* Tags */}
                     <div className="flex flex-wrap gap-1.5">
                       {project.tags.map((tag, i) => (
-                        <span 
-                          key={i} 
+                        <span
+                          key={i}
                           className="text-[11px] px-3 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200 font-medium"
                         >
                           {tag}
@@ -856,8 +1362,8 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {BLOG_POSTS.map((post) => (
-              <article 
-                key={post.slug} 
+              <article
+                key={post.slug}
                 className="rounded-3xl overflow-hidden flex flex-col justify-between bg-white border border-slate-200/90 hover:border-purple-500/50 shadow-lg hover:shadow-xl hover:shadow-purple-900/10 transition-all duration-300 group hover:-translate-y-2"
               >
                 <div>
@@ -869,7 +1375,7 @@ export default function HomePage() {
                       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                    
+
                     <span className="absolute top-4 left-4 text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full bg-white text-purple-700 border border-purple-200 shadow-sm">
                       {post.category}
                     </span>
@@ -1037,11 +1543,10 @@ export default function HomePage() {
 
               {submitStatus.message && (
                 <div
-                  className={`p-4 rounded-xl sm:rounded-2xl mb-5 text-sm flex items-center gap-3 ${
-                    submitStatus.success
+                  className={`p-4 rounded-xl sm:rounded-2xl mb-5 text-sm flex items-center gap-3 ${submitStatus.success
                       ? 'bg-emerald-50 border border-emerald-300 text-emerald-800'
                       : 'bg-rose-50 border border-rose-300 text-rose-800'
-                  }`}
+                    }`}
                 >
                   {submitStatus.success ? <CheckCircle2 size={18} /> : <AlertCircle size={18} />}
                   <span>{submitStatus.message}</span>
@@ -1136,12 +1641,241 @@ export default function HomePage() {
             <Link href="/" className="hover:text-purple-400 transition-colors">Home</Link>
             <Link href="/#about" className="hover:text-purple-400 transition-colors">About</Link>
             <Link href="/#skills" className="hover:text-purple-400 transition-colors">Skills</Link>
+            <Link href="/#certificates" className="hover:text-purple-400 transition-colors">Certificates</Link>
             <Link href="/#portfolio" className="hover:text-purple-400 transition-colors">Portfolio</Link>
             <Link href="/#blog" className="hover:text-purple-400 transition-colors">Blog</Link>
             <Link href="/#contact" className="hover:text-purple-400 transition-colors">Contact</Link>
           </div>
         </div>
       </footer>
+
+      {/* Fullscreen Certificate Zoom Modal (Transparent White Theme) */}
+      {modalCert && (() => {
+        const activeModalCert = CERTIFICATES.find((c) => c.id === modalCert.certId);
+        if (!activeModalCert) return null;
+        const activeModalSlide = activeModalCert.slides[modalCert.slideIndex] || activeModalCert.slides[0];
+        if (!activeModalSlide) return null;
+        const hasMultiple = activeModalCert.slides.length > 1;
+
+        return (
+          <div
+            className="fixed inset-0 z-[9999] bg-slate-950/35 backdrop-blur-2xl flex flex-col justify-between select-none animate-fadeIn"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) closeCertModal();
+            }}
+          >
+            {/* Modal Top Header Bar */}
+            <div className="flex items-center justify-between gap-3 px-4 sm:px-6 py-3.5 bg-white/85 border-b border-white/40 backdrop-blur-xl z-30 shadow-sm">
+              {/* Title & Level Badge */}
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="p-2 rounded-xl bg-purple-100 border border-purple-200 text-[#9333ea] shrink-0 hidden sm:flex shadow-xs">
+                  <Award size={20} />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-slate-950 font-extrabold text-sm sm:text-base truncate">
+                      {activeModalCert.title}
+                    </h3>
+                    {hasMultiple && (
+                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-100 text-purple-800 border border-purple-200">
+                        {activeModalSlide.label}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-slate-500 text-xs truncate">
+                    {activeModalSlide.title || activeModalCert.subtitle}
+                  </p>
+                </div>
+              </div>
+
+              {/* Center: Zoom Controls Toolbar */}
+              <div className="flex items-center gap-1 sm:gap-1.5 bg-white/90 border border-slate-200/90 rounded-full px-2.5 sm:px-3 py-1.5 shadow-sm">
+                <button
+                  type="button"
+                  onClick={handleZoomOut}
+                  disabled={zoomScale <= 0.75}
+                  className="p-1.5 rounded-full hover:bg-slate-100 text-slate-700 hover:text-slate-950 disabled:opacity-40 transition-all cursor-pointer"
+                  title="Zoom Out (-)"
+                  aria-label="Zoom Out"
+                >
+                  <ZoomOut size={16} />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleResetZoom}
+                  className="px-2 py-0.5 text-xs font-mono font-bold text-[#9333ea] hover:text-purple-900 transition-colors cursor-pointer"
+                  title="Reset Zoom"
+                >
+                  {Math.round(zoomScale * 100)}%
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleZoomIn}
+                  disabled={zoomScale >= 3}
+                  className="p-1.5 rounded-full hover:bg-slate-100 text-slate-700 hover:text-slate-950 disabled:opacity-40 transition-all cursor-pointer"
+                  title="Zoom In (+)"
+                  aria-label="Zoom In"
+                >
+                  <ZoomIn size={16} />
+                </button>
+
+                <div className="w-[1px] h-4 bg-slate-300 mx-1" />
+
+                <button
+                  type="button"
+                  onClick={handleResetZoom}
+                  className="p-1.5 rounded-full hover:bg-slate-100 text-slate-700 hover:text-slate-950 transition-all cursor-pointer"
+                  title="Reset View"
+                  aria-label="Reset View"
+                >
+                  <RotateCcw size={15} />
+                </button>
+              </div>
+
+              {/* Right: Official Link & Close */}
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={activeModalCert.verificationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] hover:from-[#a21caf] hover:to-[#6b21a8] text-white font-bold text-xs transition-all shadow-md cursor-pointer"
+                >
+                  <span>Official Site</span>
+                  <ExternalLink size={13} />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={closeCertModal}
+                  className="p-2 rounded-xl bg-slate-100/90 hover:bg-rose-50 text-slate-700 hover:text-rose-600 border border-slate-200 transition-colors cursor-pointer"
+                  title="Close (Esc)"
+                  aria-label="Close modal"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+
+            {/* Center Interactive Canvas (Transparent View) */}
+            <div
+              className="relative flex-1 overflow-auto flex items-center justify-center p-4 sm:p-8 bg-transparent"
+              onClick={(e) => {
+                if (e.target === e.currentTarget) closeCertModal();
+              }}
+            >
+              {/* Certificate Image Frame with Zoom (No opaque container box, smooth crossfade) */}
+              <div
+                className={`transition-transform duration-200 origin-center select-none bg-transparent relative flex items-center justify-center ${
+                  zoomScale > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-zoom-in'
+                }`}
+                style={{
+                  transform: `scale(${zoomScale})`,
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleZoom();
+                }}
+                title={zoomScale > 1 ? 'Click to reset zoom' : 'Click to zoom in'}
+              >
+                {activeModalCert.slides.map((slide, idx) => (
+                  <img
+                    key={slide.image}
+                    src={slide.image}
+                    alt={slide.title}
+                    className={`max-h-[76vh] max-w-[88vw] object-contain rounded-2xl shadow-2xl bg-transparent transition-opacity duration-300 ease-in-out ${
+                      idx === modalCert.slideIndex
+                        ? 'opacity-100 relative z-10'
+                        : 'opacity-0 absolute inset-0 m-auto pointer-events-none z-0'
+                    } ${activeModalCert.orientation === 'portrait' ? 'h-[76vh]' : 'w-auto'}`}
+                    loading="eager"
+                    decoding="async"
+                    draggable={false}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom Footer Bar with Navigation Arrows and Level Switcher */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 sm:px-6 py-3 bg-white/85 border-t border-white/40 backdrop-blur-xl z-30 shadow-sm">
+              {/* Bottom Level Tabs with < and > arrows */}
+              {hasMultiple ? (
+                <div className="flex items-center gap-1.5 p-1 bg-white/90 border border-slate-200 rounded-2xl shadow-xs">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const nextIdx =
+                        (modalCert.slideIndex - 1 + activeModalCert.slides.length) %
+                        activeModalCert.slides.length;
+                      setModalCert({ ...modalCert, slideIndex: nextIdx });
+                    }}
+                    className="p-1.5 rounded-xl hover:bg-slate-100 text-slate-700 hover:text-slate-950 transition-all cursor-pointer"
+                    title="Previous Level"
+                    aria-label="Previous Level"
+                  >
+                    <ChevronLeft size={18} />
+                  </button>
+
+                  {activeModalCert.slides.map((s, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setModalCert({ ...modalCert, slideIndex: idx });
+                      }}
+                      className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                        modalCert.slideIndex === idx
+                          ? 'bg-gradient-to-r from-[#c026d3] to-[#7c3aed] text-white shadow-sm'
+                          : 'text-slate-600 hover:text-slate-950 hover:bg-slate-100'
+                      }`}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const nextIdx =
+                        (modalCert.slideIndex + 1) % activeModalCert.slides.length;
+                      setModalCert({ ...modalCert, slideIndex: nextIdx });
+                    }}
+                    className="p-1.5 rounded-xl hover:bg-slate-100 text-slate-700 hover:text-slate-950 transition-all cursor-pointer"
+                    title="Next Level"
+                    aria-label="Next Level"
+                  >
+                    <ChevronRight size={18} />
+                  </button>
+                </div>
+              ) : (
+                <div className="text-xs text-slate-600">
+                  Credential ID: <span className="font-mono text-[#9333ea] font-bold">{activeModalSlide.serialNo || activeModalCert.credentialId}</span>
+                </div>
+              )}
+
+              {/* Info Tip */}
+              <div className="text-[11px] text-slate-500 text-center">
+                <span>Click image to toggle zoom ({Math.round(zoomScale * 100)}%) • ESC to close</span>
+              </div>
+
+              {/* Mobile Official Link */}
+              <a
+                href={activeModalCert.verificationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="md:hidden inline-flex items-center gap-1 text-xs text-[#9333ea] font-bold hover:underline"
+              >
+                <span>Open Verification Site</span>
+                <ExternalLink size={12} />
+              </a>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
