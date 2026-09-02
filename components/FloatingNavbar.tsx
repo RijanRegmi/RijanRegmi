@@ -325,8 +325,8 @@ export default function FloatingNavbar({
       >
         {/* Transparent Frosted Glass Floating Pill Container */}
         <div className={`relative rounded-full px-3 sm:px-5 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-3 lg:gap-4 ${isDark
-            ? 'bg-[#0e0e14]/85 border border-white/10 shadow-2xl shadow-black/60'
-            : 'bg-white/70 backdrop-blur-2xl sm:backdrop-blur-3xl border border-white/75 shadow-lg shadow-slate-900/5'
+            ? 'bg-[#0e0e14]/70 border border-white/10 shadow-2xl shadow-black/40'
+            : 'bg-white/65 border border-white/60 shadow-lg shadow-slate-900/5'
           } backdrop-blur-2xl sm:backdrop-blur-3xl w-full overflow-hidden animate-navbar-glass-reveal`}>
 
           {/* Inner Content */}
@@ -482,8 +482,8 @@ export default function FloatingNavbar({
         >
           <div className="overflow-hidden w-full">
             <div className={`mt-2.5 ${isDark
-                ? 'bg-[#0e0e14]/95 border border-white/10 text-gray-200 shadow-2xl shadow-black/80'
-                : 'bg-white/95 border border-slate-200/90 text-slate-800 shadow-2xl shadow-slate-900/20'
+                ? 'bg-[#0e0e14]/85 border border-white/10 text-gray-200 shadow-2xl shadow-black/80'
+                : 'bg-white/85 border border-slate-200/90 text-slate-800 shadow-2xl shadow-slate-900/20'
               } backdrop-blur-3xl rounded-3xl p-5 space-y-1`}>
               {navItems.map((item, index) => (
                 <div
