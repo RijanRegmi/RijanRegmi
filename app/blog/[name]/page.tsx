@@ -13,10 +13,12 @@ import {
   Check, 
   Sparkles,
   BookOpen,
-  ArrowRight
+  ArrowRight,
+  Smartphone
 } from 'lucide-react';
 import { BLOG_POSTS } from '@/lib/data/blogs';
 import FloatingNavbar from '@/components/FloatingNavbar';
+import MobileScreenshotSlider from '@/components/MobileScreenshotSlider';
 
 interface BlogPageProps {
   params: {
@@ -123,7 +125,7 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-[#a855f7] selection:text-white w-full max-w-full overflow-x-hidden">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans selection:bg-[#a855f7] selection:text-white w-full max-w-full">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
@@ -132,7 +134,7 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
       <FloatingNavbar />
 
       {/* Main Content Area */}
-      <main className="flex-1 pt-28 sm:pt-36 pb-20 px-4 sm:px-6 lg:px-8 max-w-[1200px] w-full mx-auto relative z-10 overflow-x-hidden">
+      <main className="flex-1 pt-28 sm:pt-36 pb-20 px-4 sm:px-6 lg:px-8 max-w-[1200px] w-full mx-auto relative z-10">
         
         {/* Back Link */}
         <div className="mb-8">
@@ -243,7 +245,7 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
         </div>
 
         {/* Body Layout: 2 Columns on Desktop */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 mb-16 relative">
           
           {/* Main Article Content */}
           <div className="lg:col-span-8 space-y-10">
@@ -294,6 +296,11 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
               ))}
             </div>
 
+            {/* Mobile Screenshots Slider in Phone Covers */}
+            {post.mobileScreenshots && post.mobileScreenshots.length > 0 && (
+              <MobileScreenshotSlider screens={post.mobileScreenshots} />
+            )}
+
             {/* Key Challenges & Solutions */}
             <div className="space-y-4">
               <h3 className="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2.5">
@@ -319,54 +326,56 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
           </div>
 
           {/* Sidebar: Technology Stack & Quick Actions */}
-          <aside aria-label="Technical Details Sidebar" className="lg:col-span-4 space-y-6 sticky top-24">
-            
-            {/* Tech Stack Card */}
-            <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xl space-y-4">
-              <p className="text-base font-bold text-slate-900 flex items-center gap-2 uppercase tracking-wider text-xs">
-                <Cpu size={16} className="text-purple-600" />
-                <span>Technology Stack</span>
-              </p>
+          <div className="lg:col-span-4 relative">
+            <aside aria-label="Technical Details Sidebar" className="sticky top-24 space-y-6">
+              
+              {/* Tech Stack Card */}
+              <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xl space-y-4">
+                <p className="text-base font-bold text-slate-900 flex items-center gap-2 uppercase tracking-wider text-xs">
+                  <Cpu size={16} className="text-purple-600" />
+                  <span>Technology Stack</span>
+                </p>
 
-              <div className="space-y-3">
-                {post.techStackBreakdown.map((tech, idx) => (
-                  <div key={idx} className="p-3 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
-                    <div className="flex items-center justify-between">
-                      <strong className="text-xs font-bold text-slate-900">{tech.name}</strong>
-                      <span className="text-[10px] uppercase font-bold text-purple-700">{tech.role}</span>
+                <div className="space-y-3">
+                  {post.techStackBreakdown.map((tech, idx) => (
+                    <div key={idx} className="p-3 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <strong className="text-xs font-bold text-slate-900">{tech.name}</strong>
+                        <span className="text-[10px] uppercase font-bold text-purple-700">{tech.role}</span>
+                      </div>
+                      <p className="text-[11px] text-slate-600 leading-snug">{tech.highlight}</p>
                     </div>
-                    <p className="text-[11px] text-slate-600 leading-snug">{tech.highlight}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
+
+                {/* Tags */}
+                <div className="pt-3 border-t border-slate-200 flex flex-wrap gap-1.5">
+                  {post.tags.map((tag, idx) => (
+                    <span key={idx} className="text-[11px] px-3 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 font-medium">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
 
-              {/* Tags */}
-              <div className="pt-3 border-t border-slate-200 flex flex-wrap gap-1.5">
-                {post.tags.map((tag, idx) => (
-                  <span key={idx} className="text-[11px] px-3 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 font-medium">
-                    {tag}
-                  </span>
-                ))}
+              {/* Launch Project CTA */}
+              <div className="p-6 rounded-3xl bg-gradient-to-b from-purple-50 to-white border border-purple-200 text-center space-y-3 shadow-xl">
+                <p className="text-base font-bold text-slate-900">Experience the Live Platform</p>
+                <p className="text-xs text-slate-600">Explore the production deployment with full interactions.</p>
+                <a
+                  href={post.websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Launch production deployment for ${post.title}`}
+                  className="w-full inline-flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] text-white text-xs font-bold shadow-lg shadow-purple-900/25 hover:scale-105 transition-transform"
+                >
+                  <span>Launch {post.displayUrl}</span>
+                  <ExternalLink size={14} />
+                </a>
               </div>
-            </div>
 
-            {/* Launch Project CTA */}
-            <div className="p-6 rounded-3xl bg-gradient-to-b from-purple-50 to-white border border-purple-200 text-center space-y-3 shadow-xl">
-              <p className="text-base font-bold text-slate-900">Experience the Live Platform</p>
-              <p className="text-xs text-slate-600">Explore the production deployment with full interactions.</p>
-              <a
-                href={post.websiteUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Launch production deployment for ${post.title}`}
-                className="w-full inline-flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-gradient-to-r from-[#c026d3] via-[#9333ea] to-[#7c3aed] text-white text-xs font-bold shadow-lg shadow-purple-900/25 hover:scale-105 transition-transform"
-              >
-                <span>Launch {post.displayUrl}</span>
-                <ExternalLink size={14} />
-              </a>
-            </div>
-
-          </aside>
+            </aside>
+          </div>
 
         </div>
 

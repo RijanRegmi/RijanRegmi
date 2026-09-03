@@ -28,13 +28,13 @@ export const PROJECTS: ProjectItem[] = [
   {
     id: 'rilogram',
     title: 'Rilogram',
-    category: 'Royale Gaming & Mobile App',
+    category: 'Invite-Only Chat SaaS & Mobile App',
     url: 'https://www.royalegamingg.com/',
     displayUrl: 'www.royalegamingg.com',
     image: '/assets/webiste/rilogram.png',
     logo: '/assets/brand/rilogram_logo.png',
-    tags: ['React', 'Mobile App', 'Node.js', 'Express', 'Gaming UI'],
-    desc: 'High-engagement digital royale gaming portal and mobile application with real-time leaderboards, interactive matchmaking, and tournament flows.',
+    tags: ['React', 'Mobile App', 'Node.js', 'Express', 'Socket.IO', 'SaaS'],
+    desc: 'Invite-first secure chat SaaS and mobile app originally built for gaming community client Royale Gaming to coordinate private event communication without inbox spam.',
     actionText: 'VISIT WEBSITE',
   },
   {
