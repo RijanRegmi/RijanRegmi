@@ -454,54 +454,88 @@ export default function FloatingNavbar({
                 </a>
               )}
 
-              {/* Mobile Menu Hamburger Toggle Button */}
+              {/* Mobile Menu Hamburger Toggle Button with Smooth Morph */}
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   setMobileMenuOpen(!mobileMenuOpen);
                 }}
-                className={`lg:hidden p-2.5 rounded-full transition-all duration-300 cursor-pointer shrink-0 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none ${mobileMenuOpen
-                    ? 'bg-gradient-to-r from-[#c026d3] to-[#7c3aed] text-white rotate-90 scale-105 shadow-md shadow-purple-900/40'
+                style={{
+                  transition: 'background-color 1500ms cubic-bezier(0.2, 1, 0.3, 1), transform 1500ms cubic-bezier(0.2, 1, 0.3, 1), box-shadow 1500ms cubic-bezier(0.2, 1, 0.3, 1)',
+                }}
+                className={`lg:hidden relative w-10 h-10 rounded-full flex items-center justify-center cursor-pointer shrink-0 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none ${
+                  mobileMenuOpen
+                    ? 'bg-gradient-to-r from-[#c026d3] to-[#7c3aed] text-white rotate-90 shadow-md shadow-purple-900/40'
                     : isDark ? 'text-gray-300 hover:text-white hover:bg-white/10' : 'text-slate-800 hover:bg-slate-100/90'
-                  }`}
+                }`}
                 aria-label="Toggle Navigation Menu"
               >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                <Menu
+                  style={{
+                    transition: 'transform 1500ms cubic-bezier(0.2, 1, 0.3, 1), opacity 1500ms cubic-bezier(0.2, 1, 0.3, 1)',
+                  }}
+                  className={`w-5 h-5 absolute ${
+                    mobileMenuOpen ? 'opacity-0 rotate-90 scale-50' : 'opacity-100 rotate-0 scale-100'
+                  }`}
+                />
+                <X
+                  style={{
+                    transition: 'transform 1500ms cubic-bezier(0.2, 1, 0.3, 1), opacity 1500ms cubic-bezier(0.2, 1, 0.3, 1)',
+                  }}
+                  className={`w-5 h-5 absolute ${
+                    mobileMenuOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-50'
+                  }`}
+                />
               </button>
             </div>
           </div>
         </div>
 
-        {/* 4. Responsive Mobile Glassmorphic Drawer (Slow top-to-bottom expand with staggered item loading) */}
+        {/* 4. Responsive Mobile Glassmorphic Drawer (Extra slow, smooth slide-down and slide-up animation) */}
         <div
-          className={`lg:hidden absolute top-full left-0 right-0 w-full grid transition-[grid-template-rows,opacity] duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] z-50 ${mobileMenuOpen
-              ? 'grid-rows-[1fr] opacity-100 pointer-events-auto visible'
-              : 'grid-rows-[0fr] opacity-0 pointer-events-none invisible'
-            }`}
+          style={{
+            transition: 'grid-template-rows 1800ms cubic-bezier(0.2, 1, 0.3, 1), opacity 1800ms cubic-bezier(0.2, 1, 0.3, 1)',
+          }}
+          className={`lg:hidden absolute top-full left-0 right-0 w-full grid z-50 ${
+            mobileMenuOpen
+              ? 'grid-rows-[1fr] opacity-100 pointer-events-auto'
+              : 'grid-rows-[0fr] opacity-0 pointer-events-none'
+          }`}
         >
           <div className="overflow-hidden w-full">
-            <div className={`mt-2.5 ${isDark
-                ? 'bg-[#0e0e14]/85 border border-white/10 text-gray-200 shadow-2xl shadow-black/80'
-                : 'bg-white/85 border border-slate-200/90 text-slate-800 shadow-2xl shadow-slate-900/20'
-              } backdrop-blur-3xl rounded-3xl p-5 space-y-1`}>
+            <div
+              style={{
+                transition: 'transform 1800ms cubic-bezier(0.2, 1, 0.3, 1), opacity 1800ms cubic-bezier(0.2, 1, 0.3, 1)',
+              }}
+              className={`mt-2.5 ${
+                mobileMenuOpen ? 'translate-y-0 opacity-100 scale-100' : '-translate-y-12 opacity-0 scale-[0.95]'
+              } ${
+                isDark
+                  ? 'bg-[#0e0e14]/90 border border-white/10 text-gray-200 shadow-2xl shadow-black/80'
+                  : 'bg-white/90 border border-slate-200/90 text-slate-800 shadow-2xl shadow-slate-900/20'
+              } backdrop-blur-3xl rounded-3xl p-5 space-y-1`}
+            >
               {navItems.map((item, index) => (
                 <div
                   key={item.label}
                   style={{
-                    transitionDelay: mobileMenuOpen ? `${120 + index * 80}ms` : '0ms',
+                    transition: 'transform 1000ms cubic-bezier(0.2, 1, 0.3, 1), opacity 1000ms cubic-bezier(0.2, 1, 0.3, 1)',
+                    transitionDelay: mobileMenuOpen ? `${120 + index * 60}ms` : '0ms',
                   }}
-                  className={`transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${mobileMenuOpen
+                  className={`${
+                    mobileMenuOpen
                       ? 'opacity-100 translate-y-0'
-                      : 'opacity-0 -translate-y-3 pointer-events-none'
-                    }`}
+                      : 'opacity-0 -translate-y-4 pointer-events-none'
+                  }`}
                 >
                   {item.href.startsWith('/') && !item.href.includes('#') ? (
                     <Link
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center justify-between px-4 py-3 rounded-2xl text-[15px] font-medium ${isDark ? 'text-gray-200 hover:text-white hover:bg-purple-600/20' : 'text-slate-800 hover:text-slate-950 hover:bg-purple-50'
-                        } transition-all whitespace-nowrap`}
+                      className={`flex items-center justify-between px-4 py-3 rounded-2xl text-[15px] font-medium ${
+                        isDark ? 'text-gray-200 hover:text-white hover:bg-purple-600/20' : 'text-slate-800 hover:text-slate-950 hover:bg-purple-50'
+                      } transition-all whitespace-nowrap`}
                     >
                       <span>{item.label}</span>
                       <span className="sr-only"> (Mobile Menu Link)</span>
@@ -515,8 +549,9 @@ export default function FloatingNavbar({
                     <a
                       href={item.href}
                       onClick={(e) => handleNavClick(e, item.href)}
-                      className={`flex items-center justify-between px-4 py-3 rounded-2xl text-[15px] font-medium ${isDark ? 'text-gray-200 hover:text-white hover:bg-purple-600/20' : 'text-slate-800 hover:text-slate-950 hover:bg-purple-50'
-                        } transition-all cursor-pointer whitespace-nowrap`}
+                      className={`flex items-center justify-between px-4 py-3 rounded-2xl text-[15px] font-medium ${
+                        isDark ? 'text-gray-200 hover:text-white hover:bg-purple-600/20' : 'text-slate-800 hover:text-slate-950 hover:bg-purple-50'
+                      } transition-all cursor-pointer whitespace-nowrap`}
                     >
                       <span>{item.label}</span>
                       <span className="sr-only"> (Mobile Menu Link)</span>
@@ -532,13 +567,16 @@ export default function FloatingNavbar({
 
               <div
                 style={{
-                  transitionDelay: mobileMenuOpen ? `${120 + navItems.length * 80}ms` : '0ms',
+                  transition: 'transform 1000ms cubic-bezier(0.2, 1, 0.3, 1), opacity 1000ms cubic-bezier(0.2, 1, 0.3, 1)',
+                  transitionDelay: mobileMenuOpen ? `${120 + navItems.length * 60}ms` : '0ms',
                 }}
-                className={`pt-3 mt-2 border-t ${isDark ? 'border-white/10' : 'border-slate-200/70'
-                  } transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${mobileMenuOpen
+                className={`pt-3 mt-2 border-t ${
+                  isDark ? 'border-white/10' : 'border-slate-200/70'
+                } ${
+                  mobileMenuOpen
                     ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 -translate-y-3 pointer-events-none'
-                  }`}
+                    : 'opacity-0 -translate-y-4 pointer-events-none'
+                }`}
               >
                 <a
                   href={ctaHref}
