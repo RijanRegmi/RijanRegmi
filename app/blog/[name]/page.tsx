@@ -88,6 +88,13 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   };
 }
 
+// Map slug to actual ISO publish dates
+const POST_DATES: Record<string, string> = {
+  ropewallet: '2026-08-01',
+  rilogram: '2026-07-01',
+  'regmi-plastic-traders': '2026-06-01',
+};
+
 export default function BlogDetailPage({ params }: BlogPageProps) {
   const post = BLOG_POSTS.find((p) => p.slug === params.name);
 
@@ -98,30 +105,95 @@ export default function BlogDetailPage({ params }: BlogPageProps) {
   const otherPosts = BLOG_POSTS.filter((p) => p.slug !== post.slug);
   const articleUrl = `${SITE_URL}/blog/${post.slug}`;
   const imageUrl = post.image.startsWith('http') ? post.image : `${SITE_URL}${post.image}`;
+  const logoUrl = post.logo.startsWith('http') ? post.logo : `${SITE_URL}${post.logo}`;
+  const datePublished = POST_DATES[post.slug] ?? '2026-06-01';
 
+  // Full structured data for this blog/case-study page
   const articleSchema = {
     '@context': 'https://schema.org',
-    '@type': 'TechArticle',
-    headline: post.title,
-    description: post.excerpt,
-    image: imageUrl,
-    url: articleUrl,
-    datePublished: '2026-08-01',
-    author: {
-      '@type': 'Person',
-      name: 'Rijan Regmi',
-      url: SITE_URL,
-    },
-    publisher: {
-      '@type': 'Person',
-      name: 'Rijan Regmi',
-      url: SITE_URL,
-    },
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': articleUrl,
-    },
-    keywords: post.tags.join(', '),
+    '@graph': [
+      // ── Article ────────────────────────────────────────────────────────────
+      {
+        '@type': 'TechArticle',
+        '@id': `${articleUrl}/#article`,
+        headline: post.title,
+        description: post.excerpt,
+        url: articleUrl,
+        datePublished,
+        dateModified: datePublished,
+        inLanguage: 'en-US',
+        author: {
+          '@type': 'Person',
+          '@id': `${SITE_URL}/#person`,
+          name: 'Rijan Regmi',
+          url: SITE_URL,
+        },
+        publisher: {
+          '@type': 'Person',
+          '@id': `${SITE_URL}/#person`,
+          name: 'Rijan Regmi',
+          url: SITE_URL,
+        },
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': articleUrl,
+        },
+        image: {
+          '@type': 'ImageObject',
+          url: imageUrl,
+          contentUrl: imageUrl,
+          width: 1200,
+          height: 630,
+          name: `${post.title} — by Rijan Regmi`,
+          description: post.excerpt,
+          author: { '@id': `${SITE_URL}/#person` },
+          license: SITE_URL,
+          acquireLicensePage: SITE_URL,
+        },
+        thumbnailUrl: logoUrl,
+        keywords: [...post.tags, post.category, 'Rijan Regmi', 'Full-Stack Developer Nepal'].join(', '),
+        articleSection: post.category,
+        about: [
+          ...post.tags.map((tag) => ({ '@type': 'Thing', name: tag })),
+        ],
+      },
+      // ── Breadcrumb ─────────────────────────────────────────────────────────
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${articleUrl}/#breadcrumb`,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Rijan Regmi Portfolio',
+            item: SITE_URL,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Engineering Blog & Case Studies',
+            item: `${SITE_URL}/#blog`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: post.title,
+            item: articleUrl,
+          },
+        ],
+      },
+      // ── Mobile screenshot images (if any) ──────────────────────────────────
+      ...(post.mobileScreenshots?.map((screenshot) => ({
+        '@type': 'ImageObject',
+        url: screenshot.image.startsWith('http') ? screenshot.image : `${SITE_URL}${screenshot.image}`,
+        contentUrl: screenshot.image.startsWith('http') ? screenshot.image : `${SITE_URL}${screenshot.image}`,
+        name: `${screenshot.label} — ${post.title} by Rijan Regmi`,
+        description: screenshot.caption,
+        author: { '@id': `${SITE_URL}/#person` },
+        license: SITE_URL,
+        acquireLicensePage: SITE_URL,
+      })) ?? []),
+    ],
   };
 
   return (

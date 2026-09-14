@@ -6,7 +6,7 @@ const BASE_URL = 'https://www.rijanregmi.com.np';
 export default function sitemap(): MetadataRoute.Sitemap {
   const currentDate = new Date();
 
-  // Core static pages
+  // ─── Core static pages ────────────────────────────────────────────────────
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: BASE_URL,
@@ -42,13 +42,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}/#portfolio`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
-      priority: 0.9,
+      priority: 0.95,
     },
     {
       url: `${BASE_URL}/#blog`,
       lastModified: currentDate,
       changeFrequency: 'weekly',
-      priority: 0.85,
+      priority: 0.9,
     },
     {
       url: `${BASE_URL}/#contact`,
@@ -58,12 +58,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Dynamic Case Studies & Blog Posts
+  // ─── Dynamic Blog / Case Study pages ─────────────────────────────────────
   const blogRoutes: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
     url: `${BASE_URL}/blog/${post.slug}`,
     lastModified: currentDate,
-    changeFrequency: 'monthly',
-    priority: 0.8,
+    changeFrequency: 'monthly' as const,
+    priority: 0.85,
   }));
 
   return [...staticRoutes, ...blogRoutes];

@@ -31,7 +31,7 @@ export default function BlogSection() {
                 <div className="relative h-52 sm:h-56 w-full overflow-hidden bg-slate-900">
                   <img
                     src={post.image}
-                    alt={post.title}
+                    alt={`${post.title} — ${post.category} case study by Rijan Regmi`}
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"

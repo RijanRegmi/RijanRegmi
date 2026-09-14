@@ -38,45 +38,50 @@ export default function HeroSection() {
             <a
               href="https://www.instagram.com/rijanregmi_"
               target="_blank"
-              rel="nofollow noopener noreferrer"
+              rel="me nofollow noopener noreferrer"
               className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-[#a855f7] text-slate-700 hover:text-white border border-slate-200 hover:border-purple-500 transition-all flex items-center justify-center shadow-md hover:scale-110"
-              aria-label="Instagram Profile"
+              aria-label="Rijan Regmi on Instagram (@rijanregmi_)"
+              title="Rijan Regmi on Instagram"
             >
               <Instagram size={18} />
             </a>
             <a
               href="https://www.linkedin.com/in/rijan-regmi-a720372b3"
               target="_blank"
-              rel="nofollow noopener noreferrer"
+              rel="me nofollow noopener noreferrer"
               className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-[#a855f7] text-slate-700 hover:text-white border border-slate-200 hover:border-purple-500 transition-all flex items-center justify-center shadow-md hover:scale-110"
-              aria-label="LinkedIn Profile"
+              aria-label="Rijan Regmi on LinkedIn"
+              title="Rijan Regmi on LinkedIn"
             >
               <Linkedin size={18} />
             </a>
             <a
               href="https://github.com/RijanRegmi"
               target="_blank"
-              rel="nofollow noopener noreferrer"
+              rel="me nofollow noopener noreferrer"
               className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-[#a855f7] text-slate-700 hover:text-white border border-slate-200 hover:border-purple-500 transition-all flex items-center justify-center shadow-md hover:scale-110"
-              aria-label="GitHub Profile"
+              aria-label="Rijan Regmi on GitHub (RijanRegmi)"
+              title="Rijan Regmi on GitHub"
             >
               <Github size={18} />
             </a>
             <a
               href="https://x.com/rijanregmi_"
               target="_blank"
-              rel="nofollow noopener noreferrer"
+              rel="me nofollow noopener noreferrer"
               className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-[#a855f7] text-slate-700 hover:text-white border border-slate-200 hover:border-purple-500 transition-all flex items-center justify-center shadow-md hover:scale-110"
-              aria-label="X Profile"
+              aria-label="Rijan Regmi on X / Twitter (@rijanregmi_)"
+              title="Rijan Regmi on X (Twitter)"
             >
               <XIcon size={16} />
             </a>
             <a
               href="https://www.facebook.com/rijan.regmi.946"
               target="_blank"
-              rel="nofollow noopener noreferrer"
+              rel="me nofollow noopener noreferrer"
               className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-[#a855f7] text-slate-700 hover:text-white border border-slate-200 hover:border-purple-500 transition-all flex items-center justify-center shadow-md hover:scale-110"
-              aria-label="Facebook Profile"
+              aria-label="Rijan Regmi on Facebook"
+              title="Rijan Regmi on Facebook"
             >
               <Facebook size={18} />
             </a>
@@ -131,7 +136,7 @@ export default function HeroSection() {
             {/* Header Profile Photo (Critical LCP Image with high fetch priority and eager loading) */}
             <img
               src="/assets/imgs/header.jpeg"
-              alt="Rijan Regmi"
+              alt="Rijan Regmi — Full-Stack Developer and Software Engineer from Kathmandu, Nepal"
               loading="eager"
               fetchPriority="high"
               decoding="async"

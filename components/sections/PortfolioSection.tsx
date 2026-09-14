@@ -38,7 +38,7 @@ export default function PortfolioSection() {
                 >
                   <img
                     src={project.image}
-                    alt={`${project.title} screenshot`}
+                    alt={`${project.title} - ${project.category} project built by Rijan Regmi`}
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
@@ -73,7 +73,7 @@ export default function PortfolioSection() {
                     {project.logo && (
                       <img
                         src={project.logo}
-                        alt={`${project.title} logo`}
+                        alt={`${project.title} logo - project by Rijan Regmi`}
                         loading="lazy"
                         decoding="async"
                         className="w-10 h-10 sm:w-12 sm:h-12 object-contain shrink-0 bg-transparent drop-shadow-sm"
