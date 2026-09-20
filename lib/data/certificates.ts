@@ -9,6 +9,7 @@ export interface CertificateItem {
   id: string;
   title: string;
   subtitle: string;
+  category?: 'football' | 'technology' | 'academic' | string;
   issuer: string;
   endorsement?: string;
   issueDate: string;
@@ -31,6 +32,7 @@ export const CERTIFICATES: CertificateItem[] = [
     id: 'footylytics-graduate',
     title: 'Footylytics Graduate',
     subtitle: 'Footylytics Football Intelligence Programme',
+    category: 'football',
     issuer: 'Footylytics Academy',
     endorsement: 'Institute of Analytics Endorsed Course',
     issueDate: 'July 17, 2026',
@@ -70,6 +72,7 @@ export const CERTIFICATES: CertificateItem[] = [
     id: 'afcas-scouting',
     title: 'A.F.C.A.S. Technical Scouting & Talent ID',
     subtitle: 'Football Fundamentals & Technical Scouting (Levels 1 – 3)',
+    category: 'football',
     issuer: 'The Association of Football Coaches & Scouts (A.F.C.A.S.)',
     endorsement: 'S4 Scouting Professional Football Accredited',
     issueDate: 'July 17, 2026',
@@ -120,6 +123,7 @@ export const CERTIFICATES: CertificateItem[] = [
     id: 'afcas-positional-scouting',
     title: 'A.F.C.A.S. Positional Scouting & Recruitment',
     subtitle: 'Professional Football Workshop Series (Modules 1 – 3)',
+    category: 'football',
     issuer: 'A.F.C.A.S. & CIMSPA Partner',
     endorsement: 'CIMSPA Education Partner & S4 Scouting Accredited',
     issueDate: 'January – February 2026',

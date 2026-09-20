@@ -12,6 +12,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { CERTIFICATES, CertificateItem, CertificateSlide } from '@/lib/data/certificates';
+import FootballPitchBackground from './FootballPitchBackground';
 
 export interface CertificateModalProps {
   modalCert: {
@@ -91,13 +92,22 @@ export default function CertificateModal({
     setZoomScale((prev) => (prev > 1.05 ? 1 : 1.75));
   };
 
+  const isFootballCategory =
+    activeModalCert.category === 'football' ||
+    activeModalCert.tags?.some((t) =>
+      t.toLowerCase().includes('football') || t.toLowerCase().includes('scouting')
+    );
+
   return (
     <div
-      className="fixed inset-0 z-[9999] bg-slate-950/35 backdrop-blur-2xl flex flex-col justify-between select-none animate-fadeIn"
+      className="fixed inset-0 z-[9999] bg-slate-950/45 backdrop-blur-xl flex flex-col justify-between select-none animate-fadeIn overflow-hidden"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
+      {/* Blurred Football Pitch Background (Only applied if certificate is of football category) */}
+      {isFootballCategory && <FootballPitchBackground />}
+
       {/* Modal Top Header Bar */}
       <div className="flex items-center justify-between gap-3 px-4 sm:px-6 py-3.5 bg-white/85 border-b border-white/40 backdrop-blur-xl z-30 shadow-sm">
         {/* Title & Level Badge */}
@@ -194,7 +204,7 @@ export default function CertificateModal({
 
       {/* Center Interactive Canvas (Transparent View) */}
       <div
-        className="relative flex-1 overflow-auto flex items-center justify-center p-4 sm:p-8 bg-transparent"
+        className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden flex items-center justify-center p-3 sm:p-6 lg:p-8 bg-transparent"
         onClick={(e) => {
           if (e.target === e.currentTarget) onClose();
         }}
@@ -218,11 +228,11 @@ export default function CertificateModal({
               key={slide.image}
               src={slide.image}
               alt={slide.title}
-              className={`max-h-[76vh] max-w-[88vw] object-contain rounded-2xl shadow-2xl bg-transparent transition-opacity duration-300 ease-in-out ${
+              className={`max-h-[66vh] sm:max-h-[76vh] max-w-[90vw] sm:max-w-[88vw] object-contain rounded-2xl shadow-2xl bg-transparent transition-opacity duration-300 ease-in-out ${
                 idx === modalCert.slideIndex
                   ? 'opacity-100 relative z-10'
                   : 'opacity-0 absolute inset-0 m-auto pointer-events-none z-0'
-              } ${activeModalCert.orientation === 'portrait' ? 'h-[76vh]' : 'w-auto'}`}
+              } ${activeModalCert.orientation === 'portrait' ? 'h-[64vh] sm:h-[76vh]' : 'w-auto'}`}
               loading="eager"
               decoding="async"
               draggable={false}
