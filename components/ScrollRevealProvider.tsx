@@ -8,6 +8,8 @@ export default function ScrollRevealProvider({ children }: { children: React.Rea
 
     const revealEl = (el: HTMLElement) => {
       el.classList.add('reveal-visible');
+      el.style.opacity = '1';
+      el.style.transform = 'none';
       // Remove will-change after animation finishes to free compositor layer
       el.addEventListener('transitionend', () => {
         el.style.willChange = 'auto';
@@ -21,6 +23,14 @@ export default function ScrollRevealProvider({ children }: { children: React.Rea
       elements.forEach((el) => {
         // Skip already-revealed elements
         if (el.classList.contains('reveal-visible')) return;
+
+        // If element is already in or near viewport, reveal immediately
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight + 100 && rect.bottom > -100) {
+          revealEl(el);
+          return;
+        }
+
         // Only set will-change when element is being actively watched
         el.style.willChange = 'opacity, transform';
         observer?.observe(el);

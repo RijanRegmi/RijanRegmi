@@ -23,6 +23,8 @@ module.exports = {
         'hero-slide-left-3': 'heroSlideInLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both',
         'hero-slide-left-4': 'heroSlideInLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both',
         'hero-slide-right': 'heroSlideInRight 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both',
+        'marquee-left': 'marqueeLeft 65s linear infinite',
+        'marquee-right': 'marqueeRight 65s linear infinite',
       },
       keyframes: {
         heroSlideInLeft: {
@@ -57,6 +59,14 @@ module.exports = {
         float: {
           '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
           '50%': { transform: 'translateY(-14px) rotate(1.2deg)' },
+        },
+        marqueeLeft: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+        marqueeRight: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0%)' },
         },
       },
     },
