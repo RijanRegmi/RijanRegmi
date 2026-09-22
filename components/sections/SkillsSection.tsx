@@ -26,12 +26,12 @@ function SkillCard({ skill }: SkillCardProps) {
           alt={`${skill.name} official logo`}
           loading="lazy"
           decoding="async"
-          className="w-8 h-8 sm:w-9 sm:h-9 object-contain drop-shadow-sm"
+          className="w-8 h-8 sm:w-9 sm:h-9 object-contain drop-shadow-sm pointer-events-none"
         />
       </div>
 
       {/* Text Content */}
-      <div className="relative z-10 w-full flex flex-col items-center">
+      <div className="relative z-10 w-full flex flex-col items-center pointer-events-none">
         <p className="text-sm sm:text-base font-bold text-slate-900 group-hover/card:text-purple-700 transition-colors tracking-tight truncate max-w-full">
           {skill.name}
         </p>
@@ -46,25 +46,39 @@ function SkillCard({ skill }: SkillCardProps) {
 interface MarqueeRowProps {
   skills: SkillItem[];
   direction: 'left' | 'right';
-  speed?: number; // pixels per second
+  speed?: number;
   repeatSets?: number;
 }
 
-function MarqueeRow({ skills, direction, speed = 42, repeatSets = 6 }: MarqueeRowProps) {
+interface PointerSample {
+  x: number;
+  time: number;
+}
+
+function MarqueeRow({ skills, direction, speed = 40, repeatSets = 7 }: MarqueeRowProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const setRef = useRef<HTMLDivElement>(null);
   const setWidthRef = useRef<number>(0);
   const posRef = useRef<number>(0);
-  const isDraggingRef = useRef(false);
-  const isUserInteractingRef = useRef(false);
-  const startXRef = useRef(0);
-  const startPosRef = useRef(0);
-  const hasMovedRef = useRef(false);
-  const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastTimeRef = useRef<number | null>(null);
+
+  // Slipping physics & momentum state refs
+  const isDraggingRef = useRef<boolean>(false);
+  const isCoastingRef = useRef<boolean>(false);
+  const isRestingRef = useRef<boolean>(false);
+  const isHoveredRef = useRef<boolean>(false);
+  const velocityRef = useRef<number>(0);
+  const currentSpeedRef = useRef<number>(0);
+  const lastXRef = useRef<number>(0);
+  const historyRef = useRef<PointerSample[]>([]);
+  const hasMovedRef = useRef<boolean>(false);
+  const restTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   const [isDraggingState, setIsDraggingState] = useState(false);
 
-  // Measure single set width and initialize starting scroll offset
+  // Base auto-drift speed direction
+  const baseAutoSpeed = direction === 'left' ? speed : -speed;
+
+  // Measure single set width and initialize starting scroll offset in the center
   useEffect(() => {
     const el = setRef.current;
     if (!el) return;
@@ -75,8 +89,9 @@ function MarqueeRow({ skills, direction, speed = 42, repeatSets = 6 }: MarqueeRo
         const wasZero = setWidthRef.current === 0;
         setWidthRef.current = w;
         if (wasZero && containerRef.current) {
-          posRef.current = w * 2;
+          posRef.current = w * 2.5;
           containerRef.current.scrollLeft = posRef.current;
+          currentSpeedRef.current = baseAutoSpeed;
         }
       }
     };
@@ -90,101 +105,184 @@ function MarqueeRow({ skills, direction, speed = 42, repeatSets = 6 }: MarqueeRo
       ro.disconnect();
       window.removeEventListener('resize', measure);
     };
-  }, []);
+  }, [baseAutoSpeed]);
 
-  const scheduleResume = useCallback((delay = 1200) => {
-    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
-    resumeTimeoutRef.current = setTimeout(() => {
-      isUserInteractingRef.current = false;
-    }, delay);
-  }, []);
-
-  // Main continuous auto-scrolling loop
+  // Main high-precision physics loop with slippery inertia curve
   useEffect(() => {
     let animId: number;
+    let prevTime = performance.now();
 
     const tick = (now: number) => {
-      if (lastTimeRef.current === null) {
-        lastTimeRef.current = now;
-      }
-      const delta = Math.min((now - lastTimeRef.current) / 1000, 0.1);
-      lastTimeRef.current = now;
+      const delta = Math.min((now - prevTime) / 1000, 0.1);
+      prevTime = now;
 
       const container = containerRef.current;
       const setWidth = setWidthRef.current;
 
       if (container && setWidth > 0) {
-        // Automatic drift when not dragging or manually interacting
-        if (!isUserInteractingRef.current && !isDraggingRef.current) {
-          const move = speed * delta;
-          if (direction === 'left') {
-            posRef.current += move;
-          } else {
-            posRef.current -= move;
-          }
+        if (isDraggingRef.current) {
+          // Actively being dragged 1:1 by pointer: position updated in handlePointerMove
+        } else if (isCoastingRef.current) {
+          // ─── SLIPPING / HIGH-SPEED ROTATION MOMENTUM PHASE ───
+          // Apply velocity
+          posRef.current += velocityRef.current * delta;
 
-          // Seamless loop wrap
-          if (posRef.current >= setWidth * 4) {
-            posRef.current -= setWidth;
-          } else if (posRef.current <= setWidth) {
-            posRef.current += setWidth;
-          }
+          // Two-tier dynamic friction:
+          // At high speed: friction is extremely low (~0.982), giving a free-wheeling "slipping" feel.
+          // As it slows down below 600px/s: friction gently tightens (~0.965) to coast smoothly to a complete stop.
+          const speedRatio = Math.min(Math.abs(velocityRef.current) / 2400, 1);
+          const baseFriction = 0.965 + 0.017 * speedRatio;
+          const frameFriction = Math.pow(baseFriction, delta * 60);
+          velocityRef.current *= frameFriction;
 
-          container.scrollLeft = posRef.current;
+          // When velocity drops below 8 px/s, it has completely stopped!
+          if (Math.abs(velocityRef.current) < 8) {
+            velocityRef.current = 0;
+            isCoastingRef.current = false;
+            isRestingRef.current = true;
+            currentSpeedRef.current = 0;
+
+            // Rest cleanly at the stopped position for 2 seconds, then smoothly ramp back into ambient loop
+            if (restTimerRef.current) clearTimeout(restTimerRef.current);
+            restTimerRef.current = setTimeout(() => {
+              isRestingRef.current = false;
+            }, 2000);
+          }
+        } else if (!isRestingRef.current && !isHoveredRef.current) {
+          // ─── AMBIENT AUTO-DRIFT LOOP ───
+          // Smoothly ramp back up to ambient speed
+          const rampRate = Math.min(delta * 2, 1);
+          currentSpeedRef.current += (baseAutoSpeed - currentSpeedRef.current) * rampRate;
+
+          posRef.current += currentSpeedRef.current * delta;
         }
+
+        // ─── SEAMLESS INFINITE LOOP WRAP ───
+        if (posRef.current >= setWidth * 4.5) {
+          posRef.current -= setWidth;
+        } else if (posRef.current <= setWidth * 1.5) {
+          posRef.current += setWidth;
+        }
+
+        container.scrollLeft = posRef.current;
       }
 
       animId = requestAnimationFrame(tick);
     };
 
     animId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(animId);
-  }, [direction, speed]);
+    return () => {
+      cancelAnimationFrame(animId);
+      if (restTimerRef.current) clearTimeout(restTimerRef.current);
+    };
+  }, [baseAutoSpeed]);
 
-  // Mouse drag handlers (Desktop manual slide)
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.button !== 0) return;
+  // Pointer Down: initiates interaction
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    // Only primary button
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+
     isDraggingRef.current = true;
-    isUserInteractingRef.current = true;
+    isCoastingRef.current = false;
+    isRestingRef.current = false;
+    velocityRef.current = 0;
+    currentSpeedRef.current = 0;
     hasMovedRef.current = false;
-    startXRef.current = e.pageX;
-    startPosRef.current = posRef.current;
+
+    if (restTimerRef.current) clearTimeout(restTimerRef.current);
+
+    const now = performance.now();
+    lastXRef.current = e.clientX;
+    historyRef.current = [{ x: e.clientX, time: now }];
+
+    try {
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    } catch {}
+
     setIsDraggingState(true);
-    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  // Pointer Move: 1:1 real-time drag tracking & velocity sampling
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDraggingRef.current || !containerRef.current) return;
-    const dx = e.pageX - startXRef.current;
-    if (Math.abs(dx) > 3) {
+
+    const now = performance.now();
+    const currentX = e.clientX;
+    const dx = currentX - lastXRef.current;
+    lastXRef.current = currentX;
+
+    if (Math.abs(dx) > 0) {
       hasMovedRef.current = true;
     }
-    const setWidth = setWidthRef.current;
-    posRef.current = startPosRef.current - dx;
+
+    // Keep history of last 75ms for high-responsiveness flick detection
+    historyRef.current.push({ x: currentX, time: now });
+    historyRef.current = historyRef.current.filter((sample) => now - sample.time <= 75);
+
+    // Direct 1:1 displacement: slow and smooth when dragging gently
+    posRef.current -= dx;
 
     // Wrap check during drag
+    const setWidth = setWidthRef.current;
     if (setWidth > 0) {
-      if (posRef.current >= setWidth * 4) {
-        posRef.current -= setWidth;
-        startPosRef.current -= setWidth;
-      } else if (posRef.current <= setWidth) {
-        posRef.current += setWidth;
-        startPosRef.current += setWidth;
-      }
+      if (posRef.current >= setWidth * 4.5) posRef.current -= setWidth;
+      else if (posRef.current <= setWidth * 1.5) posRef.current += setWidth;
     }
 
     containerRef.current.scrollLeft = posRef.current;
   };
 
-  const handleMouseUp = () => {
-    if (isDraggingRef.current) {
-      isDraggingRef.current = false;
-      setIsDraggingState(false);
-      scheduleResume(1000);
+  // Pointer Up: launch slipping rotation physics or gentle stop
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+    setIsDraggingState(false);
+
+    try {
+      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    } catch {}
+
+    const now = performance.now();
+    const recent = historyRef.current.filter((sample) => now - sample.time <= 75);
+
+    let rawVelocity = 0;
+    if (recent.length >= 2) {
+      const oldest = recent[0];
+      const newest = recent[recent.length - 1];
+      const dt = (newest.time - oldest.time) / 1000;
+      if (dt > 0.01) {
+        const dist = oldest.x - newest.x;
+        rawVelocity = dist / dt;
+      }
+    }
+
+    // Apply rotation boost multiplier so a strong flick spins/slips fast
+    let releaseVelocity = rawVelocity * 1.85;
+
+    // Fast rotation cap (up to 4800 px/s)
+    const maxVelocity = 4800;
+    releaseVelocity = Math.max(-maxVelocity, Math.min(maxVelocity, releaseVelocity));
+
+    // If moved fast (> 80 px/s): initiate slippery inertia that glides fast and stops
+    // If moved slowly (<= 80 px/s): gentle slow stop right where the user released
+    if (Math.abs(releaseVelocity) > 80) {
+      velocityRef.current = releaseVelocity;
+      isCoastingRef.current = true;
+      isRestingRef.current = false;
+    } else {
+      velocityRef.current = 0;
+      isCoastingRef.current = false;
+      isRestingRef.current = true;
+
+      // Resume ambient loop smoothly after a 1200ms rest
+      if (restTimerRef.current) clearTimeout(restTimerRef.current);
+      restTimerRef.current = setTimeout(() => {
+        isRestingRef.current = false;
+      }, 1200);
     }
   };
 
-  // Prevent accidental card click while dragging
+  // Prevent card click if dragging or spinning
   const handleClickCapture = (e: React.MouseEvent) => {
     if (hasMovedRef.current) {
       e.stopPropagation();
@@ -193,78 +291,26 @@ function MarqueeRow({ skills, direction, speed = 42, repeatSets = 6 }: MarqueeRo
     }
   };
 
-  // Mobile touch handlers
-  const handleTouchStart = () => {
-    isUserInteractingRef.current = true;
-    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
-  };
-
-  const handleTouchEnd = () => {
-    scheduleResume(1200);
-  };
-
-  // Detect manual scroll (mobile touch swipe, trackpad, mouse wheel)
-  const handleScroll = () => {
-    const container = containerRef.current;
-    if (!container) return;
-    const current = container.scrollLeft;
-
-    // Distinguish user manual scroll from programmatic auto-scroll
-    if (Math.abs(current - posRef.current) > 1.8) {
-      posRef.current = current;
-      isUserInteractingRef.current = true;
-      scheduleResume(1200);
-
-      const setWidth = setWidthRef.current;
-      if (setWidth > 0) {
-        if (posRef.current >= setWidth * 4) {
-          posRef.current -= setWidth;
-          container.scrollLeft = posRef.current;
-        } else if (posRef.current <= setWidth) {
-          posRef.current += setWidth;
-          container.scrollLeft = posRef.current;
-        }
-      }
+  // Hover detection: gently pause ambient drift on hover
+  const handlePointerEnter = () => {
+    if (!isDraggingRef.current && !isCoastingRef.current) {
+      isHoveredRef.current = true;
     }
   };
 
-  // Pause on hover
-  const handleMouseEnter = () => {
-    if (!isDraggingRef.current) {
-      isUserInteractingRef.current = true;
-    }
+  const handlePointerLeave = () => {
+    isHoveredRef.current = false;
   };
-
-  const handleMouseLeave = () => {
-    if (!isDraggingRef.current) {
-      scheduleResume(400);
-    }
-  };
-
-  // Window mouseup safeguard
-  useEffect(() => {
-    const onWindowMouseUp = () => {
-      if (isDraggingRef.current) {
-        isDraggingRef.current = false;
-        setIsDraggingState(false);
-        scheduleResume(1000);
-      }
-    };
-    window.addEventListener('mouseup', onWindowMouseUp);
-    return () => window.removeEventListener('mouseup', onWindowMouseUp);
-  }, [scheduleResume]);
 
   return (
     <div
       ref={containerRef}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onScroll={handleScroll}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
       onClickCapture={handleClickCapture}
       className={`flex overflow-x-auto no-scrollbar py-6 sm:py-7 md:py-8 select-none ${
         isDraggingState ? 'cursor-grabbing' : 'cursor-grab'
@@ -272,7 +318,7 @@ function MarqueeRow({ skills, direction, speed = 42, repeatSets = 6 }: MarqueeRo
       style={{
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
-        WebkitOverflowScrolling: 'touch',
+        touchAction: 'pan-y', // allows normal vertical scroll, captures horizontal gestures
       }}
     >
       {Array.from({ length: repeatSets }).map((_, setIndex) => (
@@ -305,10 +351,10 @@ export default function SkillsSection() {
       {/* Infinite Loop Marquee Area with ample shadow headroom and edge fades */}
       <div className="relative w-full flex flex-col gap-1 sm:gap-2 marquee-mask">
         {/* Row 1: Upper layer (moving continuously from right to left: <--) */}
-        <MarqueeRow skills={UPPER_SKILLS} direction="left" speed={42} />
+        <MarqueeRow skills={UPPER_SKILLS} direction="left" speed={40} />
 
         {/* Row 2: Lower layer (moving continuously from left to right: -->) */}
-        <MarqueeRow skills={LOWER_SKILLS} direction="right" speed={38} />
+        <MarqueeRow skills={LOWER_SKILLS} direction="right" speed={36} />
       </div>
     </section>
   );
