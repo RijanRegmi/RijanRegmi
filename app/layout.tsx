@@ -284,7 +284,7 @@ const jsonLdData = {
       description: 'A curated list of live web applications, SaaS products, and software projects built by Rijan Regmi.',
       url: `${SITE_URL}/#portfolio`,
       author: { '@id': `${SITE_URL}/#person` },
-      numberOfItems: 6,
+      numberOfItems: 7,
       itemListElement: [
         {
           '@type': 'ListItem',
@@ -333,6 +333,20 @@ const jsonLdData = {
           position: 4,
           item: {
             '@type': 'SoftwareApplication',
+            name: 'RPT',
+            description: 'Modern online plastic products e-commerce store demo with categorized shopping, product catalog, and cart system.',
+            url: 'https://rpt-two.vercel.app/',
+            applicationCategory: 'ShoppingApplication',
+            creator: { '@id': `${SITE_URL}/#person` },
+            image: `${SITE_URL}/assets/webiste/rpt.png`,
+            keywords: 'e-commerce demo, online store, Next.js, Tailwind, Vercel',
+          },
+        },
+        {
+          '@type': 'ListItem',
+          position: 5,
+          item: {
+            '@type': 'SoftwareApplication',
             name: 'PPP Football',
             description: 'Football tournament hub for live league fixtures, team management, match scorecards, and statistics.',
             url: 'https://pppfootball.vercel.app/',
@@ -344,7 +358,7 @@ const jsonLdData = {
         },
         {
           '@type': 'ListItem',
-          position: 5,
+          position: 6,
           item: {
             '@type': 'SoftwareApplication',
             name: 'EveFest',
@@ -358,7 +372,7 @@ const jsonLdData = {
         },
         {
           '@type': 'ListItem',
-          position: 6,
+          position: 7,
           item: {
             '@type': 'SoftwareApplication',
             name: 'Hamro Padhai',
@@ -408,6 +422,16 @@ const jsonLdData = {
           contentUrl: `${SITE_URL}/assets/webiste/regmiplastictraders.png`,
           name: 'Regmi Plastic Traders - E-Commerce Website by Rijan Regmi',
           description: 'Screenshot of Regmi Plastic Traders enterprise portal built by Rijan Regmi using Next.js and MongoDB.',
+          author: { '@id': `${SITE_URL}/#person` },
+          license: SITE_URL,
+          acquireLicensePage: SITE_URL,
+        },
+        {
+          '@type': 'ImageObject',
+          url: `${SITE_URL}/assets/webiste/rpt.png`,
+          contentUrl: `${SITE_URL}/assets/webiste/rpt.png`,
+          name: 'RPT - E-Commerce Demo by Rijan Regmi',
+          description: 'Screenshot of RPT e-commerce store demo built by Rijan Regmi.',
           author: { '@id': `${SITE_URL}/#person` },
           license: SITE_URL,
           acquireLicensePage: SITE_URL,

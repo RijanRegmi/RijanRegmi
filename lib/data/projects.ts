@@ -50,6 +50,18 @@ export const PROJECTS: ProjectItem[] = [
     actionText: 'VISIT WEBSITE',
   },
   {
+    id: 'rpt',
+    title: 'RPT',
+    category: 'E-Commerce Demo',
+    url: 'https://rpt-two.vercel.app/',
+    displayUrl: 'rpt-two.vercel.app',
+    image: '/assets/webiste/rpt.png',
+    logo: '/assets/brand/regmiplastictraders_logo.png',
+    tags: ['Next.js', 'E-Commerce', 'Tailwind', 'Vercel'],
+    desc: 'Modern online plastic products e-commerce store demo with categorized shopping, product catalog, cart system, and responsive ordering interface.',
+    actionText: 'VIEW LIVE DEMO',
+  },
+  {
     id: 'pppfootball',
     title: 'PPP Football',
     category: 'Sports & Tournament Hub',
