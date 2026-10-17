@@ -110,17 +110,17 @@ export default function HeroSection() {
           <div className="pt-2 sm:pt-3 w-full flex justify-center lg:justify-start">
             <div className="inline-flex items-center justify-center gap-4 sm:gap-8 lg:gap-10 bg-white/90 backdrop-blur-md border border-slate-200/90 rounded-2xl px-4 sm:px-7 py-3.5 sm:py-4 shadow-xl shadow-slate-900/5 w-full max-w-md sm:w-fit">
               <div className="text-center">
-                <div className="text-xl sm:text-2xl lg:text-3xl font-black text-[#9333ea]">3+</div>
+                <div className="text-xl sm:text-2xl lg:text-3xl font-black text-[#9333ea]">2+</div>
                 <div className="text-[11px] sm:text-xs text-slate-500 font-semibold mt-0.5 whitespace-nowrap">Experiences</div>
               </div>
               <div className="w-[1px] h-8 bg-slate-200" />
               <div className="text-center">
-                <div className="text-xl sm:text-2xl lg:text-3xl font-black text-[#9333ea]">20+</div>
+                <div className="text-xl sm:text-2xl lg:text-3xl font-black text-[#9333ea]">10+</div>
                 <div className="text-[11px] sm:text-xs text-slate-500 font-semibold mt-0.5 whitespace-nowrap">Project done</div>
               </div>
               <div className="w-[1px] h-8 bg-slate-200" />
               <div className="text-center">
-                <div className="text-xl sm:text-2xl lg:text-3xl font-black text-[#9333ea]">30+</div>
+                <div className="text-xl sm:text-2xl lg:text-3xl font-black text-[#9333ea]">2+</div>
                 <div className="text-[11px] sm:text-xs text-slate-500 font-semibold mt-0.5 whitespace-nowrap">Happy Clients</div>
               </div>
             </div>
